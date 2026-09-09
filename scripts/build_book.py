@@ -748,23 +748,37 @@ def sanitize_config(config_path):
         print(f"⚠️ Error saneando configuración: {e}")
 
 
+def toc_root_for_language(lang: str) -> str:
+    """Return the HTML path for the configured root page of a language."""
+    toc_path = os.path.join(BOOK_DIR, f"_toc_{lang}.yml")
+    with open(toc_path, "r", encoding="utf-8") as f:
+        toc = yaml.safe_load(f) or {}
+
+    root = toc.get("root", f"{lang}/intro")
+    root = root.strip("/")
+    if not root.startswith(f"{lang}/"):
+        root = f"{lang}/{root}"
+    return f"{root}.html"
+
+
 def create_redirect_index(default_lang="es"):
-    """Creates a root index.html that redirects to the default language."""
+    """Creates a root index.html that redirects to the default language root."""
+    default_root = toc_root_for_language(default_lang)
     redirect_html = f"""
     <!DOCTYPE html>
     <html>
     <head>
-        <meta http-equiv="refresh" content="0; url={default_lang}/intro.html" />
-        <script>window.location.href = "{default_lang}/intro.html";</script>
+        <meta http-equiv="refresh" content="0; url={default_root}" />
+        <script>window.location.href = "{default_root}";</script>
     </head>
     <body>
-        <p>Redirecting to <a href="{default_lang}/intro.html">{default_lang} version</a>...</p>
+        <p>Redirecting to <a href="{default_root}">{default_lang} version</a>...</p>
     </body>
     </html>
     """
     with open(os.path.join(FINAL_HTML_DIR, "index.html"), "w", encoding="utf-8") as f:
         f.write(redirect_html)
-    print(f"🔀 Redirección raíz creada apuntando a: /{default_lang}/")
+    print(f"🔀 Redirección raíz creada apuntando a: /{default_root}")
 
 
 def main():
