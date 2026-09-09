@@ -1,70 +1,124 @@
 # Sesion 9. ALU
 
-La ultima sesion aplica el trabajo modular a una ALU 74181. Se practica la inclusion de ficheros y la combinacion de operaciones aritmeticas y logicas.
+Esta pagina respeta la secuencia de la sesion original: cada apartado aparece en el mismo orden y los ejercicios se mantienen como secciones propias dentro del recorrido.
 
 ```{admonition} Objetivos de aprendizaje
 :class: tip
 
-- `include` permite insertar el contenido de otro fichero Verilog en el punto indicado.
-- La ALU 74181 recibe lineas de seleccion que determinan la operacion.
-- Las lineas de acarreo negadas requieren atencion al interpretar entradas y salidas.
+- Usar `` `include `` para incorporar un modulo externo.
+- Preparar pruebas para la ALU 74181.
+- Guardar resultados intermedios en operaciones compuestas.
 ```
 
-## Conceptos clave
+## Inclusion de ficheros fuente
+Se puede, en un punto cualquiera, incluir otro fichero que
+funcionará tal y como si lo hubiéramos tecleado en
+dicho punto. La orden es
 
-- `include` permite insertar el contenido de otro fichero Verilog en el punto indicado.
-- La ALU 74181 recibe lineas de seleccion que determinan la operacion.
-- Las lineas de acarreo negadas requieren atencion al interpretar entradas y salidas.
-- Las operaciones compuestas se resuelven almacenando resultados intermedios.
-- El modulo de prueba debe dejar claras las entradas, la operacion seleccionada y la salida esperada.
+`include
 
-## Practica guiada
+. Así, si
+queremos incluir el fichero
 
-1. Incluye el fichero `74181.v` desde un modulo de prueba; identifica los puertos en la {numref}`fig-verilog-09-74181`.
-2. Comprueba operaciones como `7+4`, `2+6+1`, AND, XOR y OR combinado con NOT/XNOR; selecciona las lineas de control con la {numref}`fig-verilog-09-74181t`.
-3. Implementa multiplicaciones pequenas como sumas repetidas; usa de nuevo la {numref}`fig-verilog-09-74181t` para justificar cada paso intermedio.
-4. Documenta cada seleccion de lineas de control para poder depurar errores; tu tabla debe referirse explicitamente a la {numref}`fig-verilog-09-74181` y a la {numref}`fig-verilog-09-74181t`.
+SumadorAuxiliar.v
 
-## Indice teoria-practica-figuras
+,
+tecleamos:
 
-Usa esta tabla como mapa rapido: cuando un ejercicio mencione una figura, esa figura forma parte del enunciado y debe consultarse antes de escribir el codigo.
+```text
+`include "SumadorAuxiliar.v"
+```
 
-| Bloque de teoria | Ejercicios relacionados | Figuras que se deben consultar |
-|---|---|---|
-| Interfaz de la ALU | Ejercicio 1 | {numref}`fig-verilog-09-74181` |
-| Seleccion de operaciones | Ejercicios 2 a 4 | {numref}`fig-verilog-09-74181t` |
+## Ejercicio 1
+El fichero
 
-## Figuras de referencia
-Las figuras siguientes recogen los esquemas y tablas que conviene tener a mano mientras se resuelven los ejercicios de la sesion.
+74181.v
 
-La {numref}`fig-verilog-09-74181` sirve como referencia para: esquema funcional de la ALU 74181.
+contiene el 
+código Verilog
+del ALU 74181 vista en teoría. Podéis encontrar el fichero
+original en la página web del profesor
+
+John P. Hayes
+
+,
+de la Universidad de Michigan
+(
+
+http://www.eecs.umich.edu/~jhayes/iscas.restore/74181.html
+
+).
+Escríbase un
+fichero Verilog con un módulo que realice las siguientes
+operaciones usando dicha ALU:
+
+1. 7+4
+2. 2+6+1
+3. 0110 ~2~ AND
+1010 ~2~
+4. 0110 ~2~ XOR
+1010 ~2~
+5. 0110 ~2~ OR
+NOT (1010 ~2~ XNOR
+0111 ~2~ ) (2 operaciones)
+6. 2*7
+7. 3*5+1 (2 operaciones)
+
+En el caso de operaciones múltiples, se deben usar registros
+para almacenar los valores intermedios. Recordemos el esquema y
+la tabla de operaciones de este circuito integrado:
+
+La {numref}`fig-verilog-09-74181` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_09/74181.png
 ---
 name: fig-verilog-09-74181
-alt: Esquema funcional de la ALU 74181.
+alt: Esquema del 74181
 width: 85%
 align: center
 ---
-Esquema funcional de la ALU 74181.
+Esquema del 74181
 ```
 
-La {numref}`fig-verilog-09-74181t` sirve como referencia para: tabla de operaciones de la ALU 74181.
+La {numref}`fig-verilog-09-74181t` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_09/74181t.png
 ---
 name: fig-verilog-09-74181t
-alt: Tabla de operaciones de la ALU 74181.
+alt: Tabla de operaciones del 74181
 width: 85%
 align: center
 ---
-Tabla de operaciones de la ALU 74181.
+Tabla de operaciones del 74181
 ```
 
-## Cierre
+Si observáis la definición del módulo:
 
-Antes de pasar a la sesion siguiente, guarda el fichero Verilog de cada ejercicio y anota dos cosas: que esperabas obtener y que imprimio realmente la simulacion. Esa comparacion es la forma mas rapida de localizar errores.
+```verilog
+module Circuit74181 (S, A, B, M, CNb, F, X, Y, CN4b, AEB);
+```
+
+os daréis cuenta de que las líneas de acarreo negadas
+son
+
+CNb
+
+y
+
+CN4b
+
+, respectivamente. Las
+líneas
+
+X
+
+e
+
+Y
+
+las podéis
+dejar sin conectar.
 
 ## Fuente original
 
-Contenido redactado y ampliado a partir de la presentacion de clase y de la pagina de referencia: <http://avellano.fis.usal.es/~compi/sesion9.htm>.
+Contenido adaptado a TeachBook a partir de la pagina de referencia: <http://avellano.usal.es/~compi/sesion9.htm>.

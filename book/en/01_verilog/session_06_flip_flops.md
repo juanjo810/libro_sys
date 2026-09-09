@@ -1,57 +1,28 @@
 # Session 6. Flip-Flops
 
-This session moves from combinational logic to memory. Flip-flops keep state, which forces us to reason about clocks, edges, asynchronous inputs, and delays.
+This session moves from combinational logic to memory. The route is to build a flip-flop, observe timing, add a clock, and finish with behavioral models.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- An RS flip-flop can be built with two cross-coupled NOR gates.
-- Blocking and non-blocking assignments do not always have the same timing effect.
-- A clock can be generated with an `always` block that periodically toggles a signal.
+- Build RS and JK flip-flops.
+- Distinguish blocking and non-blocking assignments.
+- Use `always`, clocks, edges, loops, and `case` in sequential circuits.
 ```
 
-## Key concepts
+## 1. Build the RS flip-flop
 
-- An RS flip-flop can be built with two cross-coupled NOR gates.
-- Blocking and non-blocking assignments do not always have the same timing effect.
-- A clock can be generated with an `always` block that periodically toggles a signal.
-- Edge detectors convert a level condition into a short pulse.
-- PRESET and CLEAR are often asynchronous and take priority over the clock.
-
-## Guided practice
-
-1. Program an RS flip-flop and run the proposed input sequence; consult {numref}`fig-verilog-en-06-rs` and compare the results with {numref}`fig-verilog-en-06-rstabla`.
-2. Replace some assignments with non-blocking assignments and observe the differences near the invalid states shown in {numref}`fig-verilog-en-06-rstabla`.
-3. Add a level-sensitive clock input; use {numref}`fig-verilog-en-06-rsc` and {numref}`fig-verilog-en-06-rsctabla` to check when the output should change.
-4. Build an edge-triggered version and then a JK flip-flop with PRESET and CLEAR; follow {numref}`fig-verilog-en-06-det`, {numref}`fig-verilog-en-06-jk`, and {numref}`fig-verilog-en-06-jktabla`.
-
-## Theory-practice-figures index
-
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
-
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| RS flip-flop | Exercises 1 and 2 | {numref}`fig-verilog-en-06-rs`, {numref}`fig-verilog-en-06-rstabla` |
-| Level-sensitive clock | Exercise 3 | {numref}`fig-verilog-en-06-rsc`, {numref}`fig-verilog-en-06-rsctabla` |
-| Edges and JK | Exercise 4 | {numref}`fig-verilog-en-06-det`, {numref}`fig-verilog-en-06-jk`, {numref}`fig-verilog-en-06-jktabla` |
-
-## Reference figures
-
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
-
-The {numref}`fig-verilog-en-06-rs` is the reference for: rS flip-flop with NOR gates.
+Start with the RS flip-flop in {numref}`fig-verilog-en-06-rs`. Program the circuit and check its behavior with {numref}`fig-verilog-en-06-rstabla`.
 
 ```{figure} ../../_static/verilog/sesion_06/rs.png
 ---
 name: fig-verilog-en-06-rs
-alt: RS flip-flop with NOR gates.
+alt: RS flip-flop built with NOR gates.
 width: 85%
 align: center
 ---
-RS flip-flop with NOR gates.
+RS flip-flop built with NOR gates.
 ```
-
-The {numref}`fig-verilog-en-06-rstabla` is the reference for: rS flip-flop behavior table.
 
 ```{figure} ../../_static/verilog/sesion_06/rstabla.png
 ---
@@ -63,7 +34,13 @@ align: center
 RS flip-flop behavior table.
 ```
 
-The {numref}`fig-verilog-en-06-rsc` is the reference for: clocked RS flip-flop.
+## 2. Compare assignments
+
+Replace some blocking assignments with non-blocking assignments and observe when the output changes. Timing is part of the simulated circuit.
+
+## 3. Add a level-controlled clock
+
+Now control the RS flip-flop with a clock. {numref}`fig-verilog-en-06-rsc` shows the circuit and {numref}`fig-verilog-en-06-rsctabla` shows when it should respond.
 
 ```{figure} ../../_static/verilog/sesion_06/rsc.png
 ---
@@ -75,19 +52,19 @@ align: center
 Clocked RS flip-flop.
 ```
 
-The {numref}`fig-verilog-en-06-rsctabla` is the reference for: clocked RS flip-flop behavior table.
-
 ```{figure} ../../_static/verilog/sesion_06/rsctabla.png
 ---
 name: fig-verilog-en-06-rsctabla
-alt: Clocked RS flip-flop behavior table.
+alt: Clocked RS flip-flop table.
 width: 85%
 align: center
 ---
-Clocked RS flip-flop behavior table.
+Clocked RS flip-flop table.
 ```
 
-The {numref}`fig-verilog-en-06-det` is the reference for: edge detector.
+## 4. Move to edges and JK
+
+Use the edge detector in {numref}`fig-verilog-en-06-det` so the change happens at a specific instant. Then implement the JK flip-flop in {numref}`fig-verilog-en-06-jk` and check its cases with {numref}`fig-verilog-en-06-jktabla`.
 
 ```{figure} ../../_static/verilog/sesion_06/det.png
 ---
@@ -99,8 +76,6 @@ align: center
 Edge detector.
 ```
 
-The {numref}`fig-verilog-en-06-jk` is the reference for: jK flip-flop with control inputs.
-
 ```{figure} ../../_static/verilog/sesion_06/jk.png
 ---
 name: fig-verilog-en-06-jk
@@ -110,8 +85,6 @@ align: center
 ---
 JK flip-flop with control inputs.
 ```
-
-The {numref}`fig-verilog-en-06-jktabla` is the reference for: jK flip-flop behavior table.
 
 ```{figure} ../../_static/verilog/sesion_06/jktabla.png
 ---
@@ -123,10 +96,14 @@ align: center
 JK flip-flop behavior table.
 ```
 
+## 5. Write sequential behavior
+
+Close the session with loops, `case` instructions, and conditional `always` blocks. Compare a structural circuit with a behavioral model and note when each style is clearer.
+
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion6.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion6.htm>.

@@ -1,153 +1,116 @@
 # Session 3. Logic Gates
 
-This session connects the logic gates studied in theory with their instantiation in Verilog. It also introduces the special values `x` and `z`, which are essential in digital simulation.
+This session moves from bit operators to logic gates instantiated as hardware elements. Each figure appears at the point where it is needed.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- Verilog primitive gates are instantiated by listing the output first and then the inputs.
-- The values `x` and `z` represent uncertainty and high impedance.
-- A complete truth table must include 0, 1, x, and z when the exercise requires it.
+- Instantiate Verilog primitive gates by listing output first and then inputs.
+- Check truth tables with `0`, `1`, `x`, and `z`.
+- Build combinational functions by connecting gates.
 ```
 
-## Key concepts
+## 1. Start with the AND gate
 
-- Verilog primitive gates are instantiated by listing the output first and then the inputs.
-- The values `x` and `z` represent uncertainty and high impedance.
-- A complete truth table must include 0, 1, x, and z when the exercise requires it.
-- Gate interconnection makes it possible to build more complex combinational functions.
-- The same function can be implemented in different ways, for example using only NAND gates.
-
-## Guided practice
-
-1. Complete the AND truth table with the 16 combinations of 0, 1, x, and z; use {numref}`fig-verilog-en-03-and` and {numref}`fig-verilog-en-03-andvar` as references.
-2. Repeat the check for OR, NAND, NOR, XOR, XNOR, and BUFFER; consult {numref}`fig-verilog-en-03-or` through {numref}`fig-verilog-en-03-buf` depending on the gate being simulated.
-3. Build the proposed function with gates and verify its truth table; use {numref}`fig-verilog-en-03-f2`, {numref}`fig-verilog-en-03-f2var`, and {numref}`fig-verilog-en-03-tablaf2`.
-4. Reimplement the function using only NAND gates and compare the outputs; follow {numref}`fig-verilog-en-03-f3`, {numref}`fig-verilog-en-03-f3for`, and {numref}`fig-verilog-en-03-f3nand`.
-
-## Theory-practice-figures index
-
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
-
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| Basic gates | Exercises 1 and 2 | {numref}`fig-verilog-en-03-and`, {numref}`fig-verilog-en-03-andvar`, {numref}`fig-verilog-en-03-or`, {numref}`fig-verilog-en-03-not`, {numref}`fig-verilog-en-03-nand`, {numref}`fig-verilog-en-03-nor`, {numref}`fig-verilog-en-03-xor`, {numref}`fig-verilog-en-03-xnor`, {numref}`fig-verilog-en-03-buf` |
-| Combinational function f2 | Exercise 3 | {numref}`fig-verilog-en-03-f2`, {numref}`fig-verilog-en-03-f2var`, {numref}`fig-verilog-en-03-tablaf2` |
-| NAND equivalence | Exercise 4 | {numref}`fig-verilog-en-03-f3for`, {numref}`fig-verilog-en-03-f3`, {numref}`fig-verilog-en-03-f3nand` |
-
-## Reference figures
-
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
-
-The {numref}`fig-verilog-en-03-and` is the reference for: basic AND gate.
+The first gate is written by identifying its output and inputs. {numref}`fig-verilog-en-03-and` shows the gate and {numref}`fig-verilog-en-03-andvar` connects it to the signal names used in the module.
 
 ```{figure} ../../_static/verilog/sesion_03/and.png
 ---
 name: fig-verilog-en-03-and
 alt: Basic AND gate.
-width: 85%
+width: 75%
 align: center
 ---
 Basic AND gate.
 ```
 
-The {numref}`fig-verilog-en-03-andvar` is the reference for: instantiation of an AND gate in Verilog.
-
 ```{figure} ../../_static/verilog/sesion_03/andvar.png
 ---
 name: fig-verilog-en-03-andvar
-alt: Instantiation of an AND gate in Verilog.
-width: 85%
+alt: Verilog instantiation of an AND gate.
+width: 75%
 align: center
 ---
-Instantiation of an AND gate in Verilog.
+Verilog instantiation of an AND gate.
 ```
 
-The {numref}`fig-verilog-en-03-or` is the reference for: oR gate and its conceptual connection.
+## 2. Repeat the pattern with other gates
+
+Use the same method for OR, NOT, NAND, NOR, XOR, XNOR, and BUFFER: inspect the figure, write the module, run the truth table, and compare.
 
 ```{figure} ../../_static/verilog/sesion_03/or.png
 ---
 name: fig-verilog-en-03-or
 alt: OR gate and its conceptual connection.
-width: 85%
+width: 70%
 align: center
 ---
 OR gate and its conceptual connection.
 ```
 
-The {numref}`fig-verilog-en-03-not` is the reference for: nOT gate.
-
 ```{figure} ../../_static/verilog/sesion_03/not.png
 ---
 name: fig-verilog-en-03-not
 alt: NOT gate.
-width: 85%
+width: 70%
 align: center
 ---
 NOT gate.
 ```
 
-The {numref}`fig-verilog-en-03-nand` is the reference for: nAND gate.
-
 ```{figure} ../../_static/verilog/sesion_03/nand.png
 ---
 name: fig-verilog-en-03-nand
 alt: NAND gate.
-width: 85%
+width: 70%
 align: center
 ---
 NAND gate.
 ```
 
-The {numref}`fig-verilog-en-03-nor` is the reference for: nOR gate.
-
 ```{figure} ../../_static/verilog/sesion_03/nor.png
 ---
 name: fig-verilog-en-03-nor
 alt: NOR gate.
-width: 85%
+width: 70%
 align: center
 ---
 NOR gate.
 ```
 
-The {numref}`fig-verilog-en-03-xor` is the reference for: xOR gate.
-
 ```{figure} ../../_static/verilog/sesion_03/xor.png
 ---
 name: fig-verilog-en-03-xor
 alt: XOR gate.
-width: 85%
+width: 70%
 align: center
 ---
 XOR gate.
 ```
 
-The {numref}`fig-verilog-en-03-xnor` is the reference for: xNOR gate.
-
 ```{figure} ../../_static/verilog/sesion_03/xnor.png
 ---
 name: fig-verilog-en-03-xnor
 alt: XNOR gate.
-width: 85%
+width: 70%
 align: center
 ---
 XNOR gate.
 ```
 
-The {numref}`fig-verilog-en-03-buf` is the reference for: bUFFER gate.
-
 ```{figure} ../../_static/verilog/sesion_03/buf.png
 ---
 name: fig-verilog-en-03-buf
 alt: BUFFER gate.
-width: 85%
+width: 70%
 align: center
 ---
 BUFFER gate.
 ```
 
-The {numref}`fig-verilog-en-03-f2` is the reference for: combinational logic function f2.
+## 3. Interconnect gates
+
+Use intermediate wires to connect gate outputs to other gate inputs and build the function in {numref}`fig-verilog-en-03-f2`. {numref}`fig-verilog-en-03-f2var` shows auxiliary variables and {numref}`fig-verilog-en-03-tablaf2` is the truth-table check.
 
 ```{figure} ../../_static/verilog/sesion_03/f2.png
 ---
@@ -159,8 +122,6 @@ align: center
 Combinational logic function f2.
 ```
 
-The {numref}`fig-verilog-en-03-f2var` is the reference for: auxiliary variables for function f2.
-
 ```{figure} ../../_static/verilog/sesion_03/f2var.png
 ---
 name: fig-verilog-en-03-f2var
@@ -171,19 +132,19 @@ align: center
 Auxiliary variables for function f2.
 ```
 
-The {numref}`fig-verilog-en-03-tablaf2` is the reference for: truth table associated with f2.
-
 ```{figure} ../../_static/verilog/sesion_03/tablaf2.png
 ---
 name: fig-verilog-en-03-tablaf2
-alt: Truth table associated with f2.
+alt: Truth table for f2.
 width: 85%
 align: center
 ---
-Truth table associated with f2.
+Truth table for f2.
 ```
 
-The {numref}`fig-verilog-en-03-f3for` is the reference for: algebraic form of function f3.
+## 4. Use operators and finish with NAND
+
+Compare gates with relational and logical operators. Then implement the function in {numref}`fig-verilog-en-03-f3for`, first as in {numref}`fig-verilog-en-03-f3` and then using only NAND gates as in {numref}`fig-verilog-en-03-f3nand`.
 
 ```{figure} ../../_static/verilog/sesion_03/f3for.png
 ---
@@ -195,8 +156,6 @@ align: center
 Algebraic form of function f3.
 ```
 
-The {numref}`fig-verilog-en-03-f3` is the reference for: gate implementation of f3.
-
 ```{figure} ../../_static/verilog/sesion_03/f3.png
 ---
 name: fig-verilog-en-03-f3
@@ -206,8 +165,6 @@ align: center
 ---
 Gate implementation of f3.
 ```
-
-The {numref}`fig-verilog-en-03-f3nand` is the reference for: equivalent implementation using NAND gates.
 
 ```{figure} ../../_static/verilog/sesion_03/f3nand.png
 ---
@@ -221,8 +178,8 @@ Equivalent implementation using NAND gates.
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion3.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion3.htm>.

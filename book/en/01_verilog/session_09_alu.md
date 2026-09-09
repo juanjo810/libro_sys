@@ -1,71 +1,63 @@
 # Session 9. ALU
 
-The final session applies modular work to a 74181 ALU. It practices file inclusion and the combination of arithmetic and logic operations.
+The final session applies modular work to a 74181 ALU. The route is short but integrative: include an external file, study the interface, and chain operations.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- `include` inserts the contents of another Verilog file at the indicated point.
-- The 74181 ALU receives selection lines that determine the operation.
-- Negated carry lines require care when interpreting inputs and outputs.
+- Use `` `include `` to add an external Verilog module.
+- Prepare tests for arithmetic and logic operations in the 74181 ALU.
+- Store intermediate results when an operation requires several steps.
 ```
 
-## Key concepts
+## 1. Include source files
 
-- `include` inserts the contents of another Verilog file at the indicated point.
-- The 74181 ALU receives selection lines that determine the operation.
-- Negated carry lines require care when interpreting inputs and outputs.
-- Compound operations are solved by storing intermediate results.
-- The test module must clearly state the inputs, selected operation, and expected output.
+Verilog can insert another file with `` `include ``. In this session it is used to bring in `74181.v` without copying its contents into the test file.
 
-## Guided practice
+```verilog
+`include "74181.v"
+```
 
-1. Include the `74181.v` file from a test module; identify the ports in {numref}`fig-verilog-en-09-74181`.
-2. Check operations such as `7+4`, `2+6+1`, AND, XOR, and OR combined with NOT/XNOR; select the control lines using {numref}`fig-verilog-en-09-74181t`.
-3. Implement small multiplications as repeated additions; use {numref}`fig-verilog-en-09-74181t` again to justify each intermediate step.
-4. Document each control-line selection so that errors can be debugged; your table must explicitly refer to {numref}`fig-verilog-en-09-74181` and {numref}`fig-verilog-en-09-74181t`.
+## 2. Read the ALU interface
 
-## Theory-practice-figures index
-
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
-
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| ALU interface | Exercise 1 | {numref}`fig-verilog-en-09-74181` |
-| Operation selection | Exercises 2 to 4 | {numref}`fig-verilog-en-09-74181t` |
-
-## Reference figures
-
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
-
-The {numref}`fig-verilog-en-09-74181` is the reference for: functional diagram of the 74181 ALU.
+Before testing operations, inspect the module header and locate inputs, outputs, selection lines, and negated carry lines. {numref}`fig-verilog-en-09-74181` shows the ALU diagram.
 
 ```{figure} ../../_static/verilog/sesion_09/74181.png
 ---
 name: fig-verilog-en-09-74181
-alt: Functional diagram of the 74181 ALU.
+alt: Diagram of the 74181 integrated circuit.
 width: 85%
 align: center
 ---
-Functional diagram of the 74181 ALU.
+Diagram of the 74181 integrated circuit.
 ```
 
-The {numref}`fig-verilog-en-09-74181t` is the reference for: operation table of the 74181 ALU.
+## 3. Choose operations from the table
+
+Use {numref}`fig-verilog-en-09-74181t` to find the combinations needed for additions, logic operations, and compound operations.
 
 ```{figure} ../../_static/verilog/sesion_09/74181t.png
 ---
 name: fig-verilog-en-09-74181t
-alt: Operation table of the 74181 ALU.
+alt: Operation table for the 74181 integrated circuit.
 width: 85%
 align: center
 ---
-Operation table of the 74181 ALU.
+Operation table for the 74181 integrated circuit.
 ```
+
+## 4. Test simple operations
+
+Write a test module for `7+4`, `2+6+1`, AND, XOR, and OR combined with negations. Print inputs, selection, and output in each case.
+
+## 5. Chain compound operations
+
+For `2*7` and `3*5+1`, store intermediate results in registers. Every step should correspond to a concrete ALU configuration.
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion9.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion9.htm>.

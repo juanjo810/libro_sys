@@ -1,69 +1,60 @@
 # Session 8. Counters
 
-This session uses flip-flops to build counters and analyze state transitions. The important point is to distinguish ideal behavior, delays, and transient states.
+This session uses flip-flops to build counters and analyze state transitions. The route goes from a concrete counter to arbitrary-sequence design.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- A counter changes state according to a clock signal.
-- Counting can be upward or downward depending on a mode line.
-- HOLD freezes the state when the count direction must change without jumps.
+- Program counters with clock and count mode.
+- Recognize transient states in asynchronous counters.
+- Design arbitrary-sequence counters through state transitions.
 ```
 
-## Key concepts
+## 1. Up/down counter
 
-- A counter changes state according to a clock signal.
-- Counting can be upward or downward depending on a mode line.
-- HOLD freezes the state when the count direction must change without jumps.
-- Asynchronous counters can pass through transient states while signals propagate.
-- State transition diagrams summarize the sequential behavior of a circuit.
-
-## Guided practice
-
-1. Program a four-bit up/down counter; use {numref}`fig-verilog-en-08-contador` to define inputs, outputs, and count mode.
-2. Observe what happens when changing mode without clearing the counter; explain the transient states with {numref}`fig-verilog-en-08-analisis`.
-3. Add PRESET, CLEAR, and HOLD to control transitions better; compare your design with {numref}`fig-verilog-en-08-contsinc` and {numref}`fig-verilog-en-08-cont01`.
-4. Analyze an arbitrary-count counter and draw its state diagram; use {numref}`fig-verilog-en-08-transis`, {numref}`fig-verilog-en-08-jkarn`, and {numref}`fig-verilog-en-08-contarb`.
-
-## Theory-practice-figures index
-
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
-
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| Up/down counting | Exercises 1 and 2 | {numref}`fig-verilog-en-08-contador`, {numref}`fig-verilog-en-08-analisis` |
-| Transition control | Exercise 3 | {numref}`fig-verilog-en-08-10a0`, {numref}`fig-verilog-en-08-contsinc`, {numref}`fig-verilog-en-08-cont01` |
-| States and JK flip-flops | Exercise 4 | {numref}`fig-verilog-en-08-transjk`, {numref}`fig-verilog-en-08-transis`, {numref}`fig-verilog-en-08-jkarn`, {numref}`fig-verilog-en-08-contarb` |
-
-## Reference figures
-
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
-
-The {numref}`fig-verilog-en-08-contador` is the reference for: counter with up/down selection.
+Program the four-bit counter in {numref}`fig-verilog-en-08-contador`. Use a four-bit variable for the output and test both up and down counting.
 
 ```{figure} ../../_static/verilog/sesion_08/contador.png
 ---
 name: fig-verilog-en-08-contador
-alt: Counter with up/down selection.
+alt: Counter with up/down count selection.
 width: 85%
 align: center
 ---
-Counter with up/down selection.
+Counter with up/down count selection.
 ```
 
-The {numref}`fig-verilog-en-08-10a0` is the reference for: counter from 10 down to 0.
+## 2. Control mode changes with HOLD
+
+Change the count mode in the middle of the sequence and observe the jumps. Then add active-low PRESET, CLEAR, and HOLD to freeze the state before changing direction.
+
+## 3. Analyze an asynchronous 10-to-0 counter
+
+Build the counter in {numref}`fig-verilog-en-08-10a0` and observe why the count can pass through transient states. This prepares the formal analysis in {numref}`fig-verilog-en-08-analisis`.
 
 ```{figure} ../../_static/verilog/sesion_08/10a0.png
 ---
 name: fig-verilog-en-08-10a0
-alt: Counter from 10 down to 0.
+alt: 10-to-0 counter.
 width: 85%
 align: center
 ---
-Counter from 10 down to 0.
+10-to-0 counter.
 ```
 
-The {numref}`fig-verilog-en-08-contsinc` is the reference for: synchronous counter.
+```{figure} ../../_static/verilog/sesion_08/analisis.png
+---
+name: fig-verilog-en-08-analisis
+alt: State and transition analysis.
+width: 85%
+align: center
+---
+State and transition analysis.
+```
+
+## 4. Compare with a synchronous counter
+
+Repeat the simulation with the synchronous counter in {numref}`fig-verilog-en-08-contsinc`. Compare when outputs change in each design.
 
 ```{figure} ../../_static/verilog/sesion_08/contsinc.png
 ---
@@ -75,19 +66,9 @@ align: center
 Synchronous counter.
 ```
 
-The {numref}`fig-verilog-en-08-analisis` is the reference for: analysis of states and transitions.
+## 5. Design an arbitrary count
 
-```{figure} ../../_static/verilog/sesion_08/analisis.png
----
-name: fig-verilog-en-08-analisis
-alt: Analysis of states and transitions.
-width: 85%
-align: center
----
-Analysis of states and transitions.
-```
-
-The {numref}`fig-verilog-en-08-cont01` is the reference for: auxiliary counter circuit.
+First draw the transition diagram, as in {numref}`fig-verilog-en-08-cont01`. Then use the JK transition table in {numref}`fig-verilog-en-08-transjk`, fill transitions as in {numref}`fig-verilog-en-08-transis`, and simplify with Karnaugh maps like {numref}`fig-verilog-en-08-jkarn`.
 
 ```{figure} ../../_static/verilog/sesion_08/cont01.png
 ---
@@ -99,19 +80,15 @@ align: center
 Auxiliary counter circuit.
 ```
 
-The {numref}`fig-verilog-en-08-transjk` is the reference for: transitions of a JK flip-flop.
-
 ```{figure} ../../_static/verilog/sesion_08/transJK.png
 ---
 name: fig-verilog-en-08-transjk
-alt: Transitions of a JK flip-flop.
+alt: JK flip-flop transitions.
 width: 85%
 align: center
 ---
-Transitions of a JK flip-flop.
+JK flip-flop transitions.
 ```
-
-The {numref}`fig-verilog-en-08-transis` is the reference for: state transition diagram.
 
 ```{figure} ../../_static/verilog/sesion_08/transis.png
 ---
@@ -123,8 +100,6 @@ align: center
 State transition diagram.
 ```
 
-The {numref}`fig-verilog-en-08-jkarn` is the reference for: karnaugh map for JK inputs.
-
 ```{figure} ../../_static/verilog/sesion_08/jkarn.png
 ---
 name: fig-verilog-en-08-jkarn
@@ -135,22 +110,24 @@ align: center
 Karnaugh map for JK inputs.
 ```
 
-The {numref}`fig-verilog-en-08-contarb` is the reference for: arbitrary-count counter.
+## 6. Build and test the final counter
+
+With the simplified equations, assemble the arbitrary-sequence counter. {numref}`fig-verilog-en-08-contarb` shows the final form. Test it in Verilog and check that it follows the intended sequence.
 
 ```{figure} ../../_static/verilog/sesion_08/contarb.png
 ---
 name: fig-verilog-en-08-contarb
-alt: Arbitrary-count counter.
+alt: Arbitrary-sequence counter.
 width: 85%
 align: center
 ---
-Arbitrary-count counter.
+Arbitrary-sequence counter.
 ```
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion8.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion8.htm>.

@@ -21,6 +21,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 BOOK_DIR = PROJECT_ROOT / "book"
 INTENTIONALLY_HIDDEN_PREFIXES = {
     "en": (
+        "en/intro",
+        "en/01_verilog/session_01_",
+        "en/01_verilog/session_02_",
+        "en/01_verilog/session_03_",
+        "en/01_verilog/session_04_",
+        "en/01_verilog/session_05_",
+        "en/01_verilog/session_06_",
+        "en/01_verilog/session_07_",
+        "en/01_verilog/session_08_",
+        "en/01_verilog/session_09_",
         "en/01_tutorial/",
         "en/02_degrees/",
         "en/03_cross_disciplinary_examples/",
@@ -34,6 +44,16 @@ INTENTIONALLY_HIDDEN_PREFIXES = {
         "en/93_",
     ),
     "es": (
+        "es/intro",
+        "es/01_verilog/sesion_01_",
+        "es/01_verilog/sesion_02_",
+        "es/01_verilog/sesion_03_",
+        "es/01_verilog/sesion_04_",
+        "es/01_verilog/sesion_05_",
+        "es/01_verilog/sesion_06_",
+        "es/01_verilog/sesion_07_",
+        "es/01_verilog/sesion_08_",
+        "es/01_verilog/sesion_09_",
         "es/01_tutorial/",
         "es/02_grados/",
         "es/03_ejemplos_transversales/",

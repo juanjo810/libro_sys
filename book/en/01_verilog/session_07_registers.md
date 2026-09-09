@@ -5,42 +5,14 @@ This session builds registers from flip-flops and introduces an essential debugg
 ```{admonition} Learning objectives
 :class: tip
 
-- A register stores several bits distributed across flip-flops.
-- SISO registers shift information serial-in, serial-out.
-- SIPO registers receive data serially and output it in parallel.
+- Build SISO and SIPO registers from flip-flops.
+- Generate waveform files with `$dumpfile` and `$dumpvars`.
+- Use timing traces to debug sequential circuits.
 ```
 
-## Key concepts
+## 1. Start from a D flip-flop
 
-- A register stores several bits distributed across flip-flops.
-- SISO registers shift information serial-in, serial-out.
-- SIPO registers receive data serially and output it in parallel.
-- `$dumpfile` and `$dumpvars` generate waveform files for signal inspection.
-- Real or simulated delays can explain unexpected behavior.
-
-## Guided practice
-
-1. Build a D flip-flop from the blocks already studied; use {numref}`fig-verilog-en-07-d` to verify inputs and output.
-2. Use several flip-flops to form a SISO register; follow the connection in {numref}`fig-verilog-en-07-siso`.
-3. Generate a waveform file and open it with GTKWave; compare the expected window with {numref}`fig-verilog-en-07-gtkwave`.
-4. Modify the register to obtain a parallel SIPO output; use {numref}`fig-verilog-en-07-sipo` and, for the extension, {numref}`fig-verilog-en-07-pisiso`.
-
-## Theory-practice-figures index
-
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
-
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| D flip-flop | Exercise 1 | {numref}`fig-verilog-en-07-d` |
-| SISO register | Exercise 2 | {numref}`fig-verilog-en-07-siso` |
-| Waveforms | Exercise 3 | {numref}`fig-verilog-en-07-gtkwave` |
-| SIPO registers and parallel load | Exercise 4 | {numref}`fig-verilog-en-07-sipo`, {numref}`fig-verilog-en-07-pisiso` |
-
-## Reference figures
-
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
-
-The {numref}`fig-verilog-en-07-d` is the reference for: d flip-flop.
+Begin with the D flip-flop in {numref}`fig-verilog-en-07-d`. Check that the output updates only when the clock allows it.
 
 ```{figure} ../../_static/verilog/sesion_07/d.png
 ---
@@ -52,7 +24,9 @@ align: center
 D flip-flop.
 ```
 
-The {numref}`fig-verilog-en-07-siso` is the reference for: sISO register.
+## 2. Chain flip-flops: SISO register
+
+Connect several flip-flops to form a serial-in, serial-out register. {numref}`fig-verilog-en-07-siso` shows how information shifts from one stage to the next.
 
 ```{figure} ../../_static/verilog/sesion_07/siso.png
 ---
@@ -64,19 +38,23 @@ align: center
 SISO register.
 ```
 
-The {numref}`fig-verilog-en-07-gtkwave` is the reference for: signal visualization with GTKWave.
+## 3. Debug with GTKWave
+
+Before continuing, add `$dumpfile` and `$dumpvars` to the test module. {numref}`fig-verilog-en-07-gtkwave` shows the waveform style you should obtain.
 
 ```{figure} ../../_static/verilog/sesion_07/gtkwave.png
 ---
 name: fig-verilog-en-07-gtkwave
-alt: Signal visualization with GTKWave.
+alt: Signal waveform viewed with GTKWave.
 width: 85%
 align: center
 ---
-Signal visualization with GTKWave.
+Signal waveform viewed with GTKWave.
 ```
 
-The {numref}`fig-verilog-en-07-sipo` is the reference for: sIPO register.
+## 4. Change the output: SIPO register
+
+Keep the serial input but expose the content in parallel. Use {numref}`fig-verilog-en-07-sipo` to distinguish input, clock, and parallel outputs.
 
 ```{figure} ../../_static/verilog/sesion_07/sipo.png
 ---
@@ -88,22 +66,24 @@ align: center
 SIPO register.
 ```
 
-The {numref}`fig-verilog-en-07-pisiso` is the reference for: register with parallel load and serial shift.
+## 5. Combine registers and adders
+
+The final exercise chains input registers, an adder, and an output register. {numref}`fig-verilog-en-07-pisiso` helps organize the parallel-to-serial and serial-to-parallel conversion.
 
 ```{figure} ../../_static/verilog/sesion_07/pisiso.png
 ---
 name: fig-verilog-en-07-pisiso
-alt: Register with parallel load and serial shift.
+alt: Register structure with parallel-serial and serial-parallel conversion.
 width: 85%
 align: center
 ---
-Register with parallel load and serial shift.
+Register structure with parallel-serial and serial-parallel conversion.
 ```
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion7.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion7.htm>.

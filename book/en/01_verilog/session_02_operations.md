@@ -1,46 +1,43 @@
 # Session 2. Bit Operations
 
-This session focuses on bit manipulation with masks. The central idea is to change selected positions of a register while leaving the rest unchanged.
+This session moves from a simple idea, changing selected bits in a register, to more compact operations such as reduction, concatenation, and replication.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- One's complement is obtained with `~`, turning each 0 into 1 and each 1 into 0.
-- To set bits, use a mask with ones in the target positions and a bitwise OR operation.
-- To clear bits, combine an inverted mask with a bitwise AND operation.
+- Use masks to set, clear, toggle, and inspect bits.
+- Apply reduction operators to obtain global information from a register.
+- Combine signals through concatenation and replication.
 ```
 
-## Key concepts
+## 1. Work on specific bits
 
-- One's complement is obtained with `~`, turning each 0 into 1 and each 1 into 0.
-- To set bits, use a mask with ones in the target positions and a bitwise OR operation.
-- To clear bits, combine an inverted mask with a bitwise AND operation.
-- To toggle bits, use bitwise XOR with a mask marking the positions that must change.
-- Reduction operators condense many bits into one result, for example to compute parity.
+Start with a 16-bit register whose binary value is easy to read. The guiding question is always which bits change and which stay the same. Work it out on paper before simulating.
 
-## Guided practice
+## 2. One's complement
 
-1. Declare a 16-bit register and assign an initial value that is easy to read in binary.
-2. Set one bit, clear three bits, and toggle another bit using masks.
-3. Compute the even parity bit of an 8-bit register.
-4. Solve the operations by hand first and then compare them with the simulation; in this session the main reference is the bit table you build during the calculation.
+The `~` operator inverts every bit. Test it on a small register and print the result in binary with `$display`.
 
-## Theory-practice-figures index
+## 3. Set bits
 
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
+Use bitwise OR (`|`) with a mask that has ones exactly where the target bits must be set. Test one bit first, then several bits at once.
 
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| Masks, parity, and bit reduction | Exercises 1 to 4 | Manual bit table from the statement; no external figure is associated with this session |
+## 4. Clear bits
 
-## Work without an associated figure
+Use bitwise AND (`&`) with a mask that has zeros where bits must be cleared. A common pattern is to write the positive mask and invert it.
 
-This session relies mainly on operations over registers and masks. Use a handwritten bit table to track each position before running the code.
+## 5. Toggle and inspect bits
+
+Bitwise XOR (`^`) toggles only the positions marked with ones in the mask. To inspect a bit, isolate it with a mask and compare the result.
+
+## 6. Reduce, concatenate, and replicate
+
+Reduction operators condense many bits into one result, for example parity. Concatenation joins signals with `{a, b}` and replication repeats a pattern with `{4{bit}}`.
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion2.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion2.htm>.

@@ -1,70 +1,42 @@
 # Session 5. Routers and Adders
 
-This session works with buses, tri-state buffers, multiplexers, and adders. The thread that connects them is controlling where a signal flows and how carry propagates.
+This session works with buses, tri-state buffers, multiplexers, and adders. The connecting thread is controlling where a signal flows and how carry propagates.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- Tri-state buffers can place an output in high impedance.
-- When several signals reach the same wire, types such as `tri`, `tri0`, `tri1`, `wand`, or `wor` are useful.
-- `assign` creates a continuous connection between an expression and a wire.
+- Use tri-state buffers and net types to share buses.
+- Build multiplexers from smaller blocks.
+- Implement adders and reason about propagation delays.
 ```
 
-## Key concepts
+## 1. Tri-state buffers
 
-- Tri-state buffers can place an output in high impedance.
-- When several signals reach the same wire, types such as `tri`, `tri0`, `tri1`, `wand`, or `wor` are useful.
-- `assign` creates a continuous connection between an expression and a wire.
-- Multiplexers select one input among several using control lines.
-- A full adder can be built from half adders and auxiliary gates.
-
-## Guided practice
-
-1. Program a one-bit bus transceiver; use {numref}`fig-verilog-en-05-trans` and {numref}`fig-verilog-en-05-transnombres` to name the signals.
-2. Build a 4x1 multiplexer with output enable and then an 8x1 multiplexer; use {numref}`fig-verilog-en-05-mux8x1` as a reference.
-3. Implement a half adder and a full adder; relate your code to {numref}`fig-verilog-en-05-semisuma` and {numref}`fig-verilog-en-05-sumador1`.
-4. Add delays and estimate the safe stabilization time in a four-bit adder; justify the calculation with {numref}`fig-verilog-en-05-propaga4` and compare it with {numref}`fig-verilog-en-05-anticipa`.
-
-## Theory-practice-figures index
-
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
-
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| Tri-state and buses | Exercise 1 | {numref}`fig-verilog-en-05-bufif1`, {numref}`fig-verilog-en-05-bufif0`, {numref}`fig-verilog-en-05-trans`, {numref}`fig-verilog-en-05-transnombres`, {numref}`fig-verilog-en-05-transtest` |
-| Multiplexers | Exercise 2 | {numref}`fig-verilog-en-05-mux8x1`, {numref}`fig-verilog-en-05-h4` |
-| Adders | Exercise 3 | {numref}`fig-verilog-en-05-semisuma`, {numref}`fig-verilog-en-05-sumador1` |
-| Delays and carry | Exercise 4 | {numref}`fig-verilog-en-05-propaga4`, {numref}`fig-verilog-en-05-anticipa` |
-
-## Reference figures
-
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
-
-The {numref}`fig-verilog-en-05-bufif1` is the reference for: tri-state buffer active high.
+Start with `bufif1` and `bufif0`. {numref}`fig-verilog-en-05-bufif1` and {numref}`fig-verilog-en-05-bufif0` show the difference between active-high and active-low enable.
 
 ```{figure} ../../_static/verilog/sesion_05/bufif1.png
 ---
 name: fig-verilog-en-05-bufif1
-alt: Tri-state buffer active high.
-width: 85%
+alt: Active-high tri-state buffer.
+width: 75%
 align: center
 ---
-Tri-state buffer active high.
+Active-high tri-state buffer.
 ```
-
-The {numref}`fig-verilog-en-05-bufif0` is the reference for: tri-state buffer active low.
 
 ```{figure} ../../_static/verilog/sesion_05/bufif0.png
 ---
 name: fig-verilog-en-05-bufif0
-alt: Tri-state buffer active low.
-width: 85%
+alt: Active-low tri-state buffer.
+width: 75%
 align: center
 ---
-Tri-state buffer active low.
+Active-low tri-state buffer.
 ```
 
-The {numref}`fig-verilog-en-05-trans` is the reference for: one-bit bus transceiver.
+## 2. Share a bus without contention
+
+When several outputs reach one wire, signal contention appears. Build the transceiver in {numref}`fig-verilog-en-05-trans`, name signals as in {numref}`fig-verilog-en-05-transnombres`, and verify it with {numref}`fig-verilog-en-05-transtest`.
 
 ```{figure} ../../_static/verilog/sesion_05/trans.png
 ---
@@ -76,8 +48,6 @@ align: center
 One-bit bus transceiver.
 ```
 
-The {numref}`fig-verilog-en-05-transnombres` is the reference for: auxiliary signal names in the transceiver.
-
 ```{figure} ../../_static/verilog/sesion_05/transNombres.png
 ---
 name: fig-verilog-en-05-transnombres
@@ -87,8 +57,6 @@ align: center
 ---
 Auxiliary signal names in the transceiver.
 ```
-
-The {numref}`fig-verilog-en-05-transtest` is the reference for: transceiver test module.
 
 ```{figure} ../../_static/verilog/sesion_05/transTest.png
 ---
@@ -100,19 +68,19 @@ align: center
 Transceiver test module.
 ```
 
-The {numref}`fig-verilog-en-05-mux8x1` is the reference for: 8x1 multiplexer built from smaller multiplexers.
+## 3. Assign signals and build multiplexers
+
+Use `assign` for continuous connections. Then build small multiplexers and combine them into the 8-to-1 multiplexer in {numref}`fig-verilog-en-05-mux8x1`; {numref}`fig-verilog-en-05-h4` helps organize selection signals.
 
 ```{figure} ../../_static/verilog/sesion_05/mux8x1.png
 ---
 name: fig-verilog-en-05-mux8x1
-alt: 8x1 multiplexer built from smaller multiplexers.
+alt: 8-to-1 multiplexer built from smaller multiplexers.
 width: 85%
 align: center
 ---
-8x1 multiplexer built from smaller multiplexers.
+8-to-1 multiplexer built from smaller multiplexers.
 ```
-
-The {numref}`fig-verilog-en-05-h4` is the reference for: auxiliary structure for signal selection.
 
 ```{figure} ../../_static/verilog/sesion_05/h4.png
 ---
@@ -124,7 +92,9 @@ align: center
 Auxiliary structure for signal selection.
 ```
 
-The {numref}`fig-verilog-en-05-semisuma` is the reference for: half adder.
+## 4. From half adder to full adder
+
+Implement the half adder in {numref}`fig-verilog-en-05-semisuma`, then add carry-in to obtain the full adder in {numref}`fig-verilog-en-05-sumador1`.
 
 ```{figure} ../../_static/verilog/sesion_05/semisuma.png
 ---
@@ -136,8 +106,6 @@ align: center
 Half adder.
 ```
 
-The {numref}`fig-verilog-en-05-sumador1` is the reference for: one-bit full adder.
-
 ```{figure} ../../_static/verilog/sesion_05/sumador1.png
 ---
 name: fig-verilog-en-05-sumador1
@@ -148,7 +116,9 @@ align: center
 One-bit full adder.
 ```
 
-The {numref}`fig-verilog-en-05-propaga4` is the reference for: four-bit ripple-carry adder.
+## 5. Stop, delay, and measure
+
+Use `$finish` to stop the simulation at the right time. Then add delays and estimate how long a four-bit ripple-carry adder such as {numref}`fig-verilog-en-05-propaga4` needs to settle. Compare it with the carry-lookahead option in {numref}`fig-verilog-en-05-anticipa`.
 
 ```{figure} ../../_static/verilog/sesion_05/propaga4.png
 ---
@@ -159,8 +129,6 @@ align: center
 ---
 Four-bit ripple-carry adder.
 ```
-
-The {numref}`fig-verilog-en-05-anticipa` is the reference for: carry-lookahead adder.
 
 ```{figure} ../../_static/verilog/sesion_05/anticipa.png
 ---
@@ -174,8 +142,8 @@ Carry-lookahead adder.
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion5.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion5.htm>.

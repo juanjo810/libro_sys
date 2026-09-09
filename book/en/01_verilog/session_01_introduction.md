@@ -1,70 +1,91 @@
 # Session 1. Introduction to Verilog
 
-This session introduces Verilog as a hardware description language and sets up the minimum workflow for compiling and simulating simple examples. The goal is not to write conventional software, but to describe circuits and observe their behavior.
+This session follows the order of the original page: first Verilog is introduced, then the environment is prepared, and only then do we write small programs to check formats, registers, operations, and wires.
 
 ```{admonition} Learning objectives
 :class: tip
 
-- Verilog is an HDL: it describes hardware, not just a sequence of software instructions.
-- The basic workflow is to write a `.v` file, compile it, and run the simulation.
-- Modules delimit the design; an `initial` block defines a sequence of test actions.
+- Understand Verilog as a hardware description language.
+- Create, compile, and run a first `.v` file.
+- Use constants, registers, wires, and `$display` to check results.
 ```
 
-## Key concepts
+## 1. Present Verilog
 
-- Verilog is an HDL: it describes hardware, not just a sequence of software instructions.
-- The basic workflow is to write a `.v` file, compile it, and run the simulation.
-- Modules delimit the design; an `initial` block defines a sequence of test actions.
-- Registers (`reg`) store values during simulation and wires (`wire`) connect signals.
-- The `$display` format codes help inspect values in binary, octal, decimal, or hexadecimal.
+Verilog is a hardware description language. In these labs we are not writing instructions for a processor to execute one after another: we describe a circuit and observe its behavior through simulation.
 
-## Guided practice
+## 2. Prepare the environment
 
-1. Create a working directory and save a `hello.v` file inside it.
-2. Compile the file with `iverilog` and run the generated output.
-3. Modify the example so that it prints an integer in decimal, binary, and hexadecimal; compare your output with {numref}`fig-verilog-en-01-ej-1-9`.
-4. Declare a 16-bit register and observe what happens when assigning values beyond its capacity; use {numref}`fig-verilog-en-01-ej-1-9-comentado` to identify which code fragment produces each output.
+Work always starts in a practice folder. Open a terminal, enter your working directory, and check that `iverilog` is available.
 
-## Theory-practice-figures index
+```bash
+iverilog -V
+```
 
-Use this table as a quick map: when an exercise mentions a figure, that figure is part of the statement and should be consulted before writing the code.
+## 3. Write and run `hello.v`
 
-| Theory block | Related exercises | Figures to consult |
-|---|---|---|
-| Output formats and base conversion | Exercises 3 and 4 | {numref}`fig-verilog-en-01-ej-1-9`, {numref}`fig-verilog-en-01-ej-1-9-comentado` |
+Create a file named `hello.v` with a minimal module, then compile and run it.
 
-## Reference figures
+```verilog
+module hello;
+  initial
+    $display("Hello, world");
+endmodule
+```
 
-The following figures collect the diagrams and tables that are useful while solving the exercises in this session.
+```bash
+iverilog hello.v -o hello
+./hello
+```
 
-The {numref}`fig-verilog-en-01-ej-1-9` is the reference for: expected output for an introductory conversion and display exercise.
+## 4. Comments, strings, and constants
+
+Verilog uses C-like comments: `//` for one line and `/* ... */` for blocks. Numeric constants can be written in binary with `'b`, octal with `'o`, decimal with `'d`, and hexadecimal with `'h`.
+
+## 5. Types, registers, and blocks
+
+A block with several instructions is enclosed between `begin` and `end`. Declare an integer, a real, and a 16-bit register, then assign simple values and print them.
+
+## 6. Check values with `$display`
+
+Use `$display` to print the same value in decimal, binary, octal, and hexadecimal. {numref}`fig-verilog-en-01-ej-1-9` shows an expected output for this first checking exercise.
 
 ```{figure} ../../_static/verilog/sesion_01/ej_1_9.png
 ---
 name: fig-verilog-en-01-ej-1-9
-alt: Expected output for an introductory conversion and display exercise.
+alt: Expected output for an initial conversion and data-display exercise.
 width: 85%
 align: center
 ---
-Expected output for an introductory conversion and display exercise.
+Expected output for an initial conversion and data-display exercise.
 ```
 
-The {numref}`fig-verilog-en-01-ej-1-9-comentado` is the reference for: commented version of the same example, useful for locating each instruction in the code.
+## 7. Read the full program structure
+
+Once the example prints values, read the code by zones: module name, definition area, `initial` block, instructions, and `endmodule`. {numref}`fig-verilog-en-01-ej-1-9-comentado` helps locate those parts.
 
 ```{figure} ../../_static/verilog/sesion_01/ej_1_9_comentado.png
 ---
 name: fig-verilog-en-01-ej-1-9-comentado
-alt: Commented version of the same example, useful for locating each instruction in the code.
+alt: Commented version of the same example, useful for locating each instruction.
 width: 85%
 align: center
 ---
-Commented version of the same example, useful for locating each instruction in the code.
+Commented version of the same example, useful for locating each instruction.
 ```
+
+## 8. Solve conversions and register exercises
+
+Solve several base conversions by hand and then check them with Verilog. Repeat the same pattern with 16-bit registers, unsigned limits, and two's-complement representation.
+
+## 9. Finish with shifts, nets, and special values
+
+Close the session by testing bit shifts and `wire` connections. Record that `x` means unknown value and `z` means high impedance.
 
 ## Closing checkpoint
 
-Before moving to the next session, save each Verilog exercise file and write down two things: what you expected to obtain and what the simulation actually printed. That comparison is the fastest way to locate errors.
+Before moving to the next session, save the Verilog file for each exercise and write down what you expected and what the simulation actually printed. That comparison is the quickest way to find mistakes.
 
-## Original source
+## Original Source
 
-Content translated and expanded from the class presentation and the reference page: <http://avellano.fis.usal.es/~compi/sesion1.htm>.
+Content written and expanded from the class presentation and reference page: <http://avellano.usal.es/~compi/sesion1.htm>.

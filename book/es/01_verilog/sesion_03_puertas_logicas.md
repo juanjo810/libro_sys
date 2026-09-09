@@ -1,227 +1,301 @@
 # Sesion 3. Puertas logicas
 
-La sesion conecta las puertas logicas vistas en teoria con su instanciacion en Verilog. Tambien introduce los valores especiales `x` y `z`, importantes en simulacion digital.
+Esta pagina respeta la secuencia de la sesion original: cada apartado aparece en el mismo orden y los ejercicios se mantienen como secciones propias dentro del recorrido.
 
 ```{admonition} Objetivos de aprendizaje
 :class: tip
 
-- Las puertas primitivas de Verilog se instancian indicando salida y entradas.
-- Los valores `x` e `z` permiten representar incertidumbre y alta impedancia.
-- Una tabla de verdad completa debe contemplar 0, 1, x y z cuando el ejercicio lo exige.
+- Instanciar puertas primitivas de Verilog.
+- Comprobar tablas de verdad con `0`, `1`, `x` y `z`.
+- Construir funciones combinacionales conectando puertas.
 ```
 
-## Conceptos clave
+## Puerta AND
+Recordemos de la parte de teoría el comportamiento
+de una puerta AND:
 
-- Las puertas primitivas de Verilog se instancian indicando salida y entradas.
-- Los valores `x` e `z` permiten representar incertidumbre y alta impedancia.
-- Una tabla de verdad completa debe contemplar 0, 1, x y z cuando el ejercicio lo exige.
-- La interconexion de puertas permite construir funciones combinacionales mas complejas.
-- Una misma funcion puede implementarse de varias formas, por ejemplo solo con puertas NAND.
-
-## Practica guiada
-
-1. Completa la tabla de verdad de AND con las 16 combinaciones de 0, 1, x y z; usa la {numref}`fig-verilog-03-and` y la {numref}`fig-verilog-03-andvar` como referencia.
-2. Repite la comprobacion para OR, NAND, NOR, XOR, XNOR y BUFFER; consulta de la {numref}`fig-verilog-03-or` a la {numref}`fig-verilog-03-buf` segun la puerta que estes simulando.
-3. Construye la funcion propuesta con puertas y verifica su tabla de verdad; usa la {numref}`fig-verilog-03-f2`, la {numref}`fig-verilog-03-f2var` y la {numref}`fig-verilog-03-tablaf2`.
-4. Reimplementa la funcion usando solo NAND y compara las salidas; toma como guia la {numref}`fig-verilog-03-f3`, la {numref}`fig-verilog-03-f3for` y la {numref}`fig-verilog-03-f3nand`.
-
-## Indice teoria-practica-figuras
-
-Usa esta tabla como mapa rapido: cuando un ejercicio mencione una figura, esa figura forma parte del enunciado y debe consultarse antes de escribir el codigo.
-
-| Bloque de teoria | Ejercicios relacionados | Figuras que se deben consultar |
-|---|---|---|
-| Puertas basicas | Ejercicios 1 y 2 | {numref}`fig-verilog-03-and`, {numref}`fig-verilog-03-andvar`, {numref}`fig-verilog-03-or`, {numref}`fig-verilog-03-not`, {numref}`fig-verilog-03-nand`, {numref}`fig-verilog-03-nor`, {numref}`fig-verilog-03-xor`, {numref}`fig-verilog-03-xnor`, {numref}`fig-verilog-03-buf` |
-| Funcion combinacional f2 | Ejercicio 3 | {numref}`fig-verilog-03-f2`, {numref}`fig-verilog-03-f2var`, {numref}`fig-verilog-03-tablaf2` |
-| Equivalencia con NAND | Ejercicio 4 | {numref}`fig-verilog-03-f3for`, {numref}`fig-verilog-03-f3`, {numref}`fig-verilog-03-f3nand` |
-
-## Figuras de referencia
-Las figuras siguientes recogen los esquemas y tablas que conviene tener a mano mientras se resuelven los ejercicios de la sesion.
-
-La {numref}`fig-verilog-03-and` sirve como referencia para: puerta AND basica.
+La {numref}`fig-verilog-03-and` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_03/and.png
 ---
 name: fig-verilog-03-and
-alt: Puerta AND basica.
+alt: Puerta AND
 width: 85%
 align: center
 ---
-Puerta AND basica.
+Puerta AND
 ```
 
-La {numref}`fig-verilog-03-andvar` sirve como referencia para: instanciacion de una puerta AND en Verilog.
+Vamos a comprobar, con Verilog, el funcionamiento de esta
+puerta:
 
-```{figure} ../../_static/verilog/sesion_03/andvar.png
----
-name: fig-verilog-03-andvar
-alt: Instanciacion de una puerta AND en Verilog.
-width: 85%
-align: center
----
-Instanciacion de una puerta AND en Verilog.
-```
+| /* ComprobaciOn de puerta AND: TestAnd.v */
+module TestAnd;
+reg a,b; // Entradas
+wire salida;
+and a1(salida,a,b);
+// Bloque de comportamiento
+initial
+begin
+$monitor($time," a=%b, b=%b, a.b=%b", a,b,salida);
+a=0; b=0;
+#5 a=0; b=1;
+#5 a=1; b=0;
+#5 a=1; b=1;
+end
+endmodule |  |
+| --- | --- |
 
-La {numref}`fig-verilog-03-or` sirve como referencia para: puerta OR y su conexion conceptual.
+## Ejercicio 1
+Completar la tabla de la puerta AND añadiendo
+como posibles entradas
 
-```{figure} ../../_static/verilog/sesion_03/or.png
----
-name: fig-verilog-03-or
-alt: Puerta OR y su conexion conceptual.
-width: 85%
-align: center
----
-Puerta OR y su conexion conceptual.
-```
+x
 
-La {numref}`fig-verilog-03-not` sirve como referencia para: puerta NOT.
+(indefinido)
+y
 
-```{figure} ../../_static/verilog/sesion_03/not.png
----
-name: fig-verilog-03-not
-alt: Puerta NOT.
-width: 85%
-align: center
----
-Puerta NOT.
-```
+z
 
-La {numref}`fig-verilog-03-nand` sirve como referencia para: puerta NAND.
+(alta impedancia). Tiene que haber,
+por consiguiente, dieciséis líneas en
+la tabla.
 
-```{figure} ../../_static/verilog/sesion_03/nand.png
----
-name: fig-verilog-03-nand
-alt: Puerta NAND.
-width: 85%
-align: center
----
-Puerta NAND.
-```
+## Otras puertas sencillas en Verilog
+Recordemos algunas otras puertas vistas en teoría y cómo
+se expresan en Verilog:
 
-La {numref}`fig-verilog-03-nor` sirve como referencia para: puerta NOR.
+- Puerta OR, `or(salida,a,b)` :
+- Puerta NOT, `not(salida,a)` :
+- Puertas NAND, `nand(salida,a,b)` , 
+y NOR, `nor(salida,a,b)` :
+- Puertas XOR, `xor(salida,a,b)` , 
+y XNOR, `xnor(salida,a,b)` :
+- Puerta BUFFER, `buf(salida,a)` :
 
-```{figure} ../../_static/verilog/sesion_03/nor.png
----
-name: fig-verilog-03-nor
-alt: Puerta NOR.
-width: 85%
-align: center
----
-Puerta NOR.
-```
+## Ejercicio 2
+Haced en un papel una tabla de dieciséis líneas y
+tantas columnas como puertas lógicas vistas. Rellenad
+la tabla con los valores de las puertas lógicas
+correspondientes a cada posible combinación de entradas
+formadas con 0,1,
 
-La {numref}`fig-verilog-03-xor` sirve como referencia para: puerta XOR.
+x
 
-```{figure} ../../_static/verilog/sesion_03/xor.png
----
-name: fig-verilog-03-xor
-alt: Puerta XOR.
-width: 85%
-align: center
----
-Puerta XOR.
-```
+y
 
-La {numref}`fig-verilog-03-xnor` sirve como referencia para: puerta XNOR.
+z
 
-```{figure} ../../_static/verilog/sesion_03/xnor.png
----
-name: fig-verilog-03-xnor
-alt: Puerta XNOR.
-width: 85%
-align: center
----
-Puerta XNOR.
-```
+. Añadid
+una a una las puertas al código del ejercicio anterior y
+comprobad con Verilog si habéis acertado al rellenar
+la tabla.
 
-La {numref}`fig-verilog-03-buf` sirve como referencia para: puerta BUFFER.
+## Interconexion de puertas logicas
+Vamos a construir la tabla de verdad de la función
+lógica f
 
-```{figure} ../../_static/verilog/sesion_03/buf.png
----
-name: fig-verilog-03-buf
-alt: Puerta BUFFER.
-width: 85%
-align: center
----
-Puerta BUFFER.
-```
+2
 
-La {numref}`fig-verilog-03-f2` sirve como referencia para: funcion logica combinacional f2.
+(a,b,c)=ab+c con la ayuda de
+Verilog.
+
+La {numref}`fig-verilog-03-f2` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_03/f2.png
 ---
 name: fig-verilog-03-f2
-alt: Funcion logica combinacional f2.
+alt: ab+c
 width: 85%
 align: center
 ---
-Funcion logica combinacional f2.
+ab+c
 ```
 
-La {numref}`fig-verilog-03-f2var` sirve como referencia para: variables auxiliares de la funcion f2.
+En lugar de escribir a mano los 8 casos de posibles combinaciones
+de valores de a, b y c, construiremos un registro de tres
+bits, le daremos valor inicial cero y lo iremos incrementando
+hasta alcanzar el valor 7 (111
 
-```{figure} ../../_static/verilog/sesion_03/f2var.png
----
-name: fig-verilog-03-f2var
-alt: Variables auxiliares de la funcion f2.
-width: 85%
-align: center
----
-Variables auxiliares de la funcion f2.
+2
+
+):
+
+| // Tabla de verdad de f2(a,b,c)=ab+c
+module f2;
+reg [2:0] r; // Entradas: a=r[2], b=r[1], c=r[0]
+wire salida, ab;
+and a1(ab,r[2],r[1]);
+or o1(salida,ab,r[0]);
+// Bloque de comportamiento
+initial
+begin
+$display(" a b c | f2");
+$display(" ----------");
+$monitor($time," %b %b %b | %b", r[2],r[1], r[0], salida);
+r=0; // r=000 => a=0, b=0, c=0
+while (r!='b111) #5 r=r+1;
+end
+endmodule | r r[2] r[1] r[0] 0 000 2 0 0 0 1 001 2 0 0 1 2 010 2 0 1 0 3 011 2 0 1 1 4 100 2 1 0 0 5 101 2 1 0 1 6 110 2 1 1 0 7 111 2 1 1 1 | r | r[2] | r[1] | r[0] | 0 | 000 2 | 0 | 0 | 0 | 1 | 001 2 | 0 | 0 | 1 | 2 | 010 2 | 0 | 1 | 0 | 3 | 011 2 | 0 | 1 | 1 | 4 | 100 2 | 1 | 0 | 0 | 5 | 101 2 | 1 | 0 | 1 | 6 | 110 2 | 1 | 1 | 0 | 7 | 111 2 | 1 | 1 | 1 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| r | r[2] | r[1] | r[0] |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 0 | 000 2 | 0 | 0 | 0 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 1 | 001 2 | 0 | 0 | 1 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 2 | 010 2 | 0 | 1 | 0 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 3 | 011 2 | 0 | 1 | 1 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 4 | 100 2 | 1 | 0 | 0 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 5 | 101 2 | 1 | 0 | 1 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 6 | 110 2 | 1 | 1 | 0 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+| 7 | 111 2 | 1 | 1 | 1 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+
+Se ha usado un cable auxiliar `ab` para conectar
+la salida de la puerta AND `a1` con una entrada
+de la puerta OR `o1` . El resultado de su ejecución
+coincide con la tabla vista en teoría:
+
+| a b c | f2 
+----------
+0 0 0 0 | 0
+5 0 0 1 | 1
+10 0 1 0 | 0
+15 0 1 1 | 1
+20 1 0 0 | 0
+25 1 0 1 | 1
+30 1 1 0 | 1
+35 1 1 1 | 1 |  |
+| --- | --- |
+
+## Operadores relacionales
+Además del ya visto
+
+!=
+
+, Verilog admite los
+siguientes operadores relacionales:
+
+<
+
+(menor
+que),
+
+<=
+
+(menor o igual que),
+
+==
+
+(igual que),
+
+>=
+
+(mayor o igual que) y
+
+>
+
+(mayor que). Cuando alguno de los operandos
+contiene
+
+x
+
+o
+
+z
+
+, el resultado es
+
+x
+
+. En otro caso, el resultado dependerá
+de si se cumple la condición (1) o no (0).
+
+Si se desea una comparación de igualdad estricta
+(considerando las `x` s y las `z` s)
+se ha de usar `===` (estrictamente igual) y `!==` (estrictamente distinto)
+
+## Operadores logicos
+Para expresar una condición dentro de un programa
+Verilog, a veces es necesario disponer de los operadores
+lógicos Y, O y NO. En Verilog se expresan como
+
+&&
+
+(Y),
+
+||
+
+(O) y
+
+!
+
+(NO). Así, para expresar algo
+como: "Si no ocurre que a es mayor que cero y
+b distinto de cuatro...", lo haríamos con:
+
+```text
+if (!(a>0 && b!=4)) ...
 ```
 
-La {numref}`fig-verilog-03-tablaf2` sirve como referencia para: tabla de verdad asociada a f2.
+Aplicando las leyes de De Morgan, ya sabemos que 
+expresamos lo mismo con:
 
-```{figure} ../../_static/verilog/sesion_03/tablaf2.png
----
-name: fig-verilog-03-tablaf2
-alt: Tabla de verdad asociada a f2.
-width: 85%
-align: center
----
-Tabla de verdad asociada a f2.
+```text
+if (a<=0 || b==4) ...
 ```
 
-La {numref}`fig-verilog-03-f3for` sirve como referencia para: forma algebraica de la funcion f3.
+## Ejercicio 3
+Constrúyase la tabla de verdad de la función
+f
+
+3
+
+vista en teoría y cuyo diagrama con
+puertas es el que se muestra a continuación:
+
+La {numref}`fig-verilog-03-f3for` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_03/f3for.png
 ---
 name: fig-verilog-03-f3for
-alt: Forma algebraica de la funcion f3.
+alt: f3
 width: 85%
 align: center
 ---
-Forma algebraica de la funcion f3.
+f3
 ```
 
-La {numref}`fig-verilog-03-f3` sirve como referencia para: implementacion con puertas de f3.
+La {numref}`fig-verilog-03-f3` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_03/f3.png
 ---
 name: fig-verilog-03-f3
-alt: Implementacion con puertas de f3.
+alt: f3
 width: 85%
 align: center
 ---
-Implementacion con puertas de f3.
+f3
 ```
 
-La {numref}`fig-verilog-03-f3nand` sirve como referencia para: implementacion equivalente usando NAND.
+## Ejercicio 4
+Comprobad, mediante un programa Verilog, que la función
+f
+
+3
+
+es equivalente a esta otra elaborada
+solamente con puertas NAND:
+
+La {numref}`fig-verilog-03-f3nand` reproduce la figura original usada en este punto de la sesion.
 
 ```{figure} ../../_static/verilog/sesion_03/f3nand.png
 ---
 name: fig-verilog-03-f3nand
-alt: Implementacion equivalente usando NAND.
+alt: f3 con puertas NAND
 width: 85%
 align: center
 ---
-Implementacion equivalente usando NAND.
+f3 con puertas NAND
 ```
-
-## Cierre
-
-Antes de pasar a la sesion siguiente, guarda el fichero Verilog de cada ejercicio y anota dos cosas: que esperabas obtener y que imprimio realmente la simulacion. Esa comparacion es la forma mas rapida de localizar errores.
 
 ## Fuente original
 
-Contenido redactado y ampliado a partir de la presentacion de clase y de la pagina de referencia: <http://avellano.fis.usal.es/~compi/sesion3.htm>.
+Contenido adaptado a TeachBook a partir de la pagina de referencia: <http://avellano.usal.es/~compi/sesion3.htm>.
