@@ -1,8 +1,9 @@
 format: jb-book
 root: en/01_verilog/session_00_ubuntu_terminal
-# Content temporarily hidden to publish only Session 0.
+chapters:
+  - file: en/01_verilog/session_01_introduction
+# Content temporarily hidden.
 # - file: en/intro
-# - file: en/01_verilog/session_01_introduction
 # - file: en/01_verilog/session_02_operations
 # - file: en/01_verilog/session_03_logic_gates
 # - file: en/01_verilog/session_04_modules
