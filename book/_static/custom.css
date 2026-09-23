@@ -289,3 +289,8 @@ html.opendyslexic-mode code {
 .teachbook-a11y-btn.active {
     color: var(--pst-color-link) !important;
 }
+
+/* Oculta el pie "By <autor>" del tema; el autor sigue en la portada del PDF. */
+p.component-author {
+    display: none;
+}

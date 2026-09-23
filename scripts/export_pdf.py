@@ -509,8 +509,12 @@ def is_global_bibliography_options(options_text):
     return has_global_option
 
 
-def find_global_bibliography_page(content_dir):
-    """Find the unique global bibliography page in the temporary PDF source tree."""
+def find_global_bibliography_page(content_dir, required=True):
+    """Find the unique global bibliography page in the temporary PDF source tree.
+
+    With ``required=False`` a book without any global bibliography page is
+    accepted and ``None`` is returned (used when the book has no citations).
+    """
     content_path = Path(content_dir)
     matches = []
 
@@ -525,6 +529,8 @@ def find_global_bibliography_page(content_dir):
         return matches[0][0]
 
     if not matches:
+        if not required:
+            return None
         raise BibliographyError(
             "No se encontró una página global de bibliografía con "
             f"`{{bibliography}}` y `:cited:` o `:all:` en {content_path}."
@@ -582,7 +588,12 @@ def prepare_bibliography_for_pdf(temp_root, lang, config_path):
         output_file=output_file,
     )
     update_bibtex_config_for_pdf(str(config_path), output_rel.as_posix())
-    reference_page = find_global_bibliography_page(content_dir)
+    reference_page = find_global_bibliography_page(
+        content_dir, required=result.citation_count > 0
+    )
+    if reference_page is None:
+        print(f"📚 Bibliografía PDF {lang}: sin citas ni página de bibliografía; se omite.")
+        return
     rewrite_global_bibliography_to_all(reference_page)
 
     print(
