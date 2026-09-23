@@ -1,52 +1,22 @@
-# Computadores I
+# Señales y Sistemas
 
-Bienvenido al libro de prácticas de **Computadores I**.
+Este libro reúne el material de prácticas de la asignatura **Señales y Sistemas** (2.º curso del Grado en Ingeniería Informática). Las prácticas se realizan con **MATLAB**, una herramienta pensada para el cálculo numérico y matricial que permite definir, representar y transformar señales con muy pocas líneas de código.
 
-Este material acompaña el aprendizaje de los fundamentos de diseño digital usando **Verilog** como lenguaje de descripción de hardware. La asignatura parte de una idea sencilla: un computador no es una caja mágica, sino una composición ordenada de señales, puertas lógicas, módulos, registros, contadores y unidades aritmético-lógicas.
+## Cómo usar este libro
 
-## Qué vas a aprender
+Cada sesión de prácticas tiene su propio capítulo. En cada uno encontrarás:
 
-Al trabajar con este libro aprenderás a:
+- **Objetivos de aprendizaje** al principio, para saber qué deberías dominar al terminar.
+- **Explicaciones y ejemplos de código** listos para copiar en MATLAB y modificar.
+- **Enunciados de los ejercicios**, resaltados en cajas, en el mismo orden que el guion de la sesión.
+- **Soluciones propuestas** plegadas: intenta resolver cada ejercicio antes de desplegarlas.
 
-- describir circuitos digitales mediante módulos Verilog;
-- simular el comportamiento de puertas lógicas, buses, biestables, registros y contadores;
-- interpretar señales, estados y retardos de propagación;
-- construir componentes combinacionales y secuenciales de forma incremental;
-- relacionar cada ejercicio con los esquemas y tablas de referencia de la sesión.
-
-## Cómo está organizado el curso
-
-El curso se estructura en sesiones prácticas. Cada sesión incluye una breve explicación teórica, ejercicios guiados, un índice que relaciona teoría, práctica y figuras, y esquemas de referencia para no perder de vista el circuito que se está programando.
-
-```{admonition} Método de trabajo recomendado
+```{admonition} Si ya programas en C
 :class: tip
 
-Antes de escribir código, identifica las entradas, salidas y señales internas del circuito. Después consulta las figuras de referencia, escribe el módulo Verilog y comprueba la simulación. Si el resultado no coincide con lo esperado, vuelve a la figura y revisa las conexiones.
+La primera sesión está escrita pensando en quien ya conoce C. Muchas explicaciones comparan directamente la sintaxis de ambos lenguajes para que aproveches lo que ya sabes.
 ```
 
-## Recorrido de las sesiones
+## Sesiones
 
-```{table} Mapa inicial de la asignatura
-:name: tab-mapa-computadores-i
-
-| Sesión | Tema | Idea principal |
-|---|---|---|
-| 0 | Terminal de Ubuntu para Verilog | Carpetas, archivos, editores básicos y primer contacto con `iverilog` |
-| 1 | Introducción a Verilog | Entorno de trabajo, módulos básicos y salida por pantalla |
-| 2 | Operaciones con bits | Máscaras, paridad y reducción de bits |
-| 3 | Puertas lógicas | AND, OR, NOT, NAND, NOR, XOR, XNOR y funciones combinacionales |
-| 4 | Módulos | Interfaces, jerarquía, comparadores y codificadores |
-| 5 | Encaminadores y sumadores | Buses, multiplexores, semisumadores y sumadores |
-| 6 | Biestables | Memoria elemental, reloj, flancos y entradas asíncronas |
-| 7 | Registros | Registros SISO/SIPO y depuración con cronogramas |
-| 8 | Contadores | Cuenta ascendente/descendente y transiciones de estado |
-| 9 | ALU | Inclusión de ficheros y uso de la ALU 74181 |
-```
-
-## Material disponible
-
-Empieza por la sesión de preparación del curso:
-
-- [Sesión 0. Terminal de Ubuntu para Verilog](01_verilog/sesion_00_terminal_ubuntu.md)
-
-También puedes cambiar al libro en inglés desde el selector de idioma de la barra superior.
+- {doc}`01_matlab/sesion_01_introduccion_matlab`

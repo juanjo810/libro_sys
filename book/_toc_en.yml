@@ -1,14 +1,6 @@
 format: jb-book
-root: en/01_verilog/session_00_ubuntu_terminal
-chapters:
-  - file: en/01_verilog/session_01_introduction
-# Content temporarily hidden.
-# - file: en/intro
-# - file: en/01_verilog/session_02_operations
-# - file: en/01_verilog/session_03_logic_gates
-# - file: en/01_verilog/session_04_modules
-# - file: en/01_verilog/session_05_routers_and_adders
-# - file: en/01_verilog/session_06_flip_flops
-# - file: en/01_verilog/session_07_registers
-# - file: en/01_verilog/session_08_counters
-# - file: en/01_verilog/session_09_alu
+root: en/intro
+parts:
+  - caption: Lab sessions
+    chapters:
+      - file: en/01_matlab/session_01_matlab_introduction

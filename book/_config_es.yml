@@ -1,8 +1,5 @@
 title: |
-  Elaboración de libros
-  electrónicos mediante
-  código y asistentes de
-  Inteligencia Artificial
+  Señales y Sistemas
 author: Álvaro Lozano Murciego y André Sales Mendes
 copyright: "2026"
 logo: "_static/usal_logo.png"
@@ -29,6 +26,11 @@ sphinx:
     - sphinx_kroki
   config:
     html_show_copyright: false
+    numfig_format:
+      figure: "Figura %s"
+      table: "Tabla %s"
+      code-block: "Código %s"
+      section: "Sección %s"
     suppress_warnings:
     - bibtex.duplicate_citation
     html_js_files:
@@ -50,10 +52,9 @@ latex_docclass:
 latex:
   latex_engine: xelatex
   options: "spanish"
-  subtitle: "Curso para las Facultades de Ciencias y de Ciencias Químicas"    # Opcional: subtítulo del libro
+  subtitle: "Prácticas con MATLAB · 2.º Grado en Ingeniería Informática"    # Opcional: subtítulo del libro
   header_title: |
-    Elaboración de libros electrónicos
-    con código e IA
+    Señales y Sistemas
   institution: "Universidad de Salamanca"  # Opcional
   edition: "1ª Edición"               # Opcional
   cover_logo: "_static/usal_logo.png"  # Logo de la portada PDF; el logo web se configura arriba en `logo`

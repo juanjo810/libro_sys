@@ -1,14 +1,6 @@
 format: jb-book
-root: es/01_verilog/sesion_00_terminal_ubuntu
-chapters:
-  - file: es/01_verilog/sesion_01_introduccion
-# Contenido oculto temporalmente.
-# - file: es/intro
-# - file: es/01_verilog/sesion_02_operaciones
-# - file: es/01_verilog/sesion_03_puertas_logicas
-# - file: es/01_verilog/sesion_04_modulos
-# - file: es/01_verilog/sesion_05_encaminadores_y_sumadores
-# - file: es/01_verilog/sesion_06_biestables
-# - file: es/01_verilog/sesion_07_registros
-# - file: es/01_verilog/sesion_08_contadores
-# - file: es/01_verilog/sesion_09_alu
+root: es/intro
+parts:
+  - caption: Sesiones de prácticas
+    chapters:
+      - file: es/01_matlab/sesion_01_introduccion_matlab
