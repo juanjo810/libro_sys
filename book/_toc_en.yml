@@ -4,3 +4,4 @@ parts:
   - caption: Lab sessions
     chapters:
       - file: en/01_matlab/session_01_matlab_introduction
+      - file: en/02_fourier/session_02_time_frequency

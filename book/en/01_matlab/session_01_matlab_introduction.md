@@ -600,58 +600,6 @@ end
 m      = my_max([3 8 2 5]);   % only the maximum
 ```
 
-(matlab-elementary-signals)=
-## Reference: elementary signals
-
-These are the signals that will appear most often throughout the course, ready to copy and adapt. The unit step, the rectangular pulse of width $a$ and the ramp are defined as
-
-$$
-u(t) = \begin{cases} 1, & t \ge 0 \\ 0, & t < 0 \end{cases}
-\qquad
-\Pi_a(t) = \begin{cases} 1, & |t| < a/2 \\ 0, & \text{otherwise} \end{cases}
-\qquad
-r(t) = t\,u(t)
-$$ (eq-elementary-signals)
-
-In MATLAB, the expressions in {eq}`eq-elementary-signals` are built with comparisons: `(t >= 0)` equals 1 where the condition holds and 0 where it does not.
-
-```{code-block} matlab
-:caption: Elementary signals built with logical comparisons.
-
-t = -5:0.001:5;
-
-% Unit step u(t)
-u = (t >= 0);
-
-% Rectangular pulse of width a centred at 0
-a = 2;
-rect = (t >= -a/2) & (t < a/2);
-
-% Ramp r(t) = t u(t)
-ramp = t .* (t >= 0);
-
-% Causal damped sine (typical response of a 2nd-order system)
-y_am = exp(-0.5*t) .* sin(2*pi*t) .* (t >= 0);
-```
-
-With these signals you can compute properties and apply basic transformations. The energy of a signal, $E = \int |x(t)|^2\,dt$, is approximated numerically by summing the squared samples and multiplying by the step $\Delta t$.
-
-```{code-block} matlab
-:caption: Energy, time shift and time reversal.
-
-dt = t(2) - t(1);              % sampling step
-
-% Signal energy (numerical integration)
-E = sum(abs(y_am).^2) * dt;
-
-% Time shift: y(t - t0)
-t0 = 1;
-y_del = exp(-0.5*(t-t0)) .* sin(2*pi*(t-t0)) .* (t >= t0);
-
-% Time reversal: y(-t)
-y_rev = exp(0.5*t) .* sin(-2*pi*t) .* (t <= 0);
-```
-
 ```{admonition} Session summary
 :class: seealso
 

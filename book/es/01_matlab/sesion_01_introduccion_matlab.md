@@ -600,58 +600,6 @@ end
 m      = mi_max([3 8 2 5]);   % solo el máximo
 ```
 
-(matlab-senales-elementales)=
-## Referencia: señales elementales
-
-Estas son las señales que más aparecerán a lo largo del curso, listas para copiar y adaptar. El escalón unitario, el pulso rectangular de anchura $a$ y la rampa se definen como
-
-$$
-u(t) = \begin{cases} 1, & t \ge 0 \\ 0, & t < 0 \end{cases}
-\qquad
-\Pi_a(t) = \begin{cases} 1, & |t| < a/2 \\ 0, & \text{en otro caso} \end{cases}
-\qquad
-r(t) = t\,u(t)
-$$ (eq-senales-elementales)
-
-En MATLAB, las expresiones de {eq}`eq-senales-elementales` se construyen con comparaciones: `(t >= 0)` vale 1 donde se cumple la condición y 0 donde no.
-
-```{code-block} matlab
-:caption: Señales elementales construidas con comparaciones lógicas.
-
-t = -5:0.001:5;
-
-% Escalón unitario u(t)
-u = (t >= 0);
-
-% Pulso rectangular de anchura a centrado en 0
-a = 2;
-rect = (t >= -a/2) & (t < a/2);
-
-% Rampa r(t) = t u(t)
-ramp = t .* (t >= 0);
-
-% Seno amortiguado causal (respuesta típica de un sistema de 2.º orden)
-y_am = exp(-0.5*t) .* sin(2*pi*t) .* (t >= 0);
-```
-
-Con esas señales puedes calcular propiedades y aplicar transformaciones básicas. La energía de una señal, $E = \int |x(t)|^2\,dt$, se aproxima numéricamente sumando las muestras al cuadrado y multiplicando por el paso $\Delta t$.
-
-```{code-block} matlab
-:caption: Energía, desplazamiento e inversión temporal.
-
-dt = t(2) - t(1);              % paso de muestreo
-
-% Energía de la señal (integración numérica)
-E = sum(abs(y_am).^2) * dt;
-
-% Desplazamiento temporal: y(t - t0)
-t0 = 1;
-y_ret = exp(-0.5*(t-t0)) .* sin(2*pi*(t-t0)) .* (t >= t0);
-
-% Inversión temporal: y(-t)
-y_inv = exp(0.5*t) .* sin(-2*pi*t) .* (t <= 0);
-```
-
 ```{admonition} Resumen de la sesión
 :class: seealso
 

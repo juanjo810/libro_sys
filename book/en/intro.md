@@ -9,7 +9,7 @@ Each lab session has its own chapter. In each one you will find:
 - **Learning objectives** at the start, so you know what you should master by the end.
 - **Explanations and code examples** ready to copy into MATLAB and modify.
 - **Exercise statements**, highlighted in boxes, in the same order as the session handout.
-- **Proposed solutions**, collapsed: try to solve each exercise before expanding them.
+- **Proposed solutions**, collapsed, in the sessions that include them: try to solve each exercise before expanding them.
 
 ```{admonition} If you already program in C
 :class: tip
@@ -20,3 +20,4 @@ The first session is written for students who already know C. Many explanations 
 ## Sessions
 
 - {doc}`01_matlab/session_01_matlab_introduction`
+- {doc}`02_fourier/session_02_time_frequency`

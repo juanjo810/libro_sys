@@ -9,7 +9,7 @@ Cada sesión de prácticas tiene su propio capítulo. En cada uno encontrarás:
 - **Objetivos de aprendizaje** al principio, para saber qué deberías dominar al terminar.
 - **Explicaciones y ejemplos de código** listos para copiar en MATLAB y modificar.
 - **Enunciados de los ejercicios**, resaltados en cajas, en el mismo orden que el guion de la sesión.
-- **Soluciones propuestas** plegadas: intenta resolver cada ejercicio antes de desplegarlas.
+- **Soluciones propuestas** plegadas, en las sesiones que las incluyen: intenta resolver cada ejercicio antes de desplegarlas.
 
 ```{admonition} Si ya programas en C
 :class: tip
@@ -20,3 +20,4 @@ La primera sesión está escrita pensando en quien ya conoce C. Muchas explicaci
 ## Sesiones
 
 - {doc}`01_matlab/sesion_01_introduccion_matlab`
+- {doc}`02_fourier/sesion_02_tiempo_frecuencia`
