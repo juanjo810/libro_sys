@@ -22,7 +22,6 @@ t = 0:0.001:5;                 % time vector, from 0 to 5 in steps of 0.001
 y = sin(2*pi*t);               % functions on vectors, element by element
 figure; plot(t, y); grid on    % opens a new figure and plots the signal
 hold on; plot(t, 0.5*y)        % hold on overlays the next plot
-subplot(2,1,1)                 % several plots in one figure (rows, columns, position)
 stem(w, coef)                  % vertical lines, for discrete spectra
 xlabel('t (s)'); ylabel('f(t)'); legend('a','b'); xlim([0 5])
 [t,y,w,coef] = rectangular(4,1,2,-5,5,400);   % how a lab function is called
@@ -142,23 +141,17 @@ A series with $m$ harmonics is an approximation of the signal. The more terms ar
 
 ### Shifting the signal in time
 
-Delaying the signal by a time $t_0$ gives $f(t - t_0)$. The function `rectangular_b(V,tau,T,tmin,tmax,m,t0)` performs that shift. To do so it uses the complex form of the series, with complex numbers $z = a + bj$, of modulus $r = \sqrt{a^2 + b^2}$ and phase $\varphi$ (review {ref}`matlab-ex1` to work with them in MATLAB). In polar form, $z = r\,e^{j\varphi}$, and multiplying by $e^{j\alpha}$ rotates the number by an angle $\alpha$ without changing its modulus.
-
-$$
-e^{j\varphi} = \cos\varphi + j\sin\varphi
-$$ (eq-euler-en)
-
-A positive real coefficient has phase 0 and a negative real one has phase $\pi$. A positive pure imaginary number has phase $\pi/2$ and a negative one, $-\pi/2$.
-
-In the complex series
+Delaying the signal by a time $t_0$ gives $f(t - t_0)$, and that is what the function `rectangular_b(V,tau,T,tmin,tmax,m,t0)` does. To understand how it achieves this, the series has to be written differently. Each cosine can be written as the sum of two complex exponentials, $\cos x = \tfrac12\left(e^{jx} + e^{-jx}\right)$. Doing this for every harmonic turns the series into a single sum of exponentials, running over both positive and negative indices, from $n=-m$ to $n=m$:
 
 $$
 f(t) = \frac{1}{T}\sum_{n=-m}^{m} c_n\,e^{j\omega_n t}
 $$ (eq-complex-series)
 
-the sum runs over $n = -m \ldots m$. The coefficient of harmonic $n$ is in `coef(m+1+n)`, so harmonic 0 is in `coef(m+1)` and harmonics 1, 2, 3… are in `coef(m+2)`, `coef(m+3)`, `coef(m+4)`… The signal `y` comes out with a negligible imaginary part, of order $10^{-15}$, so you plot `real(y)`.
+Each term $c_n\,e^{j\omega_n t}$ is a complex number. A complex number $z = a + bj$ has a modulus $r = \sqrt{a^2 + b^2}$ and a phase $\varphi$, and in polar form it is written $z = r\,e^{j\varphi}$ (review {ref}`matlab-ex1` to work with them in MATLAB). The only thing you need to know about this form is that multiplying by $e^{j\alpha}$ rotates the number by an angle $\alpha$ without changing its modulus.
 
-The **shift theorem** in the lecture notes states that if $f(t)$ has coefficients $c_n$, then $f(t - t_0)$ has coefficients $e^{-j\omega_n t_0}\,c_n$.
+With the series written this way, the **shift theorem** in the lecture notes states that if $f(t)$ has coefficients $c_n$, then $f(t - t_0)$ has coefficients $e^{-j\omega_n t_0}\,c_n$. In other words, shifting the signal amounts to multiplying each coefficient by a factor of this kind.
+
+In `rectangular_b.m` the coefficients are stored in the vector `coef` in the same order as the sum. The one with index $n$ is in `coef(m+1+n)`, so harmonic 0 is in `coef(m+1)`, and harmonics 1, 2, 3… are in `coef(m+2)`, `coef(m+3)`, `coef(m+4)`… The signal `y` comes out with a negligible imaginary part, of order $10^{-15}$, so you plot `real(y)`.
 
 ```{admonition} Worked example: V = 3, τ = 1, T = 4, t₀ = 0.5 s
 :class: note

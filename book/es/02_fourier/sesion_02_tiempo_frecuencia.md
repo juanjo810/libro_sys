@@ -22,7 +22,6 @@ t = 0:0.001:5;                 % vector de tiempos, de 0 a 5 en pasos de 0.001
 y = sin(2*pi*t);               % funciones sobre vectores, elemento a elemento
 figure; plot(t, y); grid on    % abre una figura nueva y dibuja la señal
 hold on; plot(t, 0.5*y)        % hold on superpone la gráfica siguiente
-subplot(2,1,1)                 % varias gráficas en una figura (filas, columnas, posición)
 stem(w, coef)                  % líneas verticales, para espectros discretos
 xlabel('t (s)'); ylabel('f(t)'); legend('a','b'); xlim([0 5])
 [t,y,w,coef] = rectangular(4,1,2,-5,5,400);   % así se llama a una función de la práctica
@@ -142,23 +141,17 @@ Una serie con $m$ armónicos es una aproximación de la señal. Cuantos más té
 
 ### Desplazar la señal en el tiempo
 
-Retrasar la señal un tiempo $t_0$ da $f(t - t_0)$. La función `rectangular_b(V,tau,T,tmin,tmax,m,t0)` hace ese desplazamiento. Para ello usa la serie en forma compleja, con números complejos $z = a + bj$, de módulo $r = \sqrt{a^2 + b^2}$ y fase $\varphi$ (repasa {ref}`matlab-ej1` para trabajar con ellos en MATLAB). En forma polar, $z = r\,e^{j\varphi}$, y multiplicar por $e^{j\alpha}$ gira el número un ángulo $\alpha$ sin cambiar su módulo.
-
-$$
-e^{j\varphi} = \cos\varphi + j\sin\varphi
-$$ (eq-euler)
-
-Un coeficiente real positivo tiene fase 0 y uno real negativo tiene fase $\pi$. Un imaginario puro positivo tiene fase $\pi/2$ y uno negativo, $-\pi/2$.
-
-En la serie compleja
+Retrasar la señal un tiempo $t_0$ da $f(t - t_0)$, y eso es lo que hace la función `rectangular_b(V,tau,T,tmin,tmax,m,t0)`. Para entender cómo lo consigue hay que cambiar la forma de escribir la serie. Cada coseno se puede escribir como suma de dos exponenciales complejas, $\cos x = \tfrac12\left(e^{jx} + e^{-jx}\right)$. Al hacerlo con todos los armónicos, la serie queda como una única suma de exponenciales, que recorre tanto los índices positivos como los negativos, de $n=-m$ a $n=m$:
 
 $$
 f(t) = \frac{1}{T}\sum_{n=-m}^{m} c_n\,e^{j\omega_n t}
 $$ (eq-serie-compleja)
 
-la suma recorre $n = -m \ldots m$. El coeficiente del armónico $n$ está en `coef(m+1+n)`, de modo que el armónico 0 está en `coef(m+1)` y los armónicos 1, 2, 3… en `coef(m+2)`, `coef(m+3)`, `coef(m+4)`… La señal `y` sale con una parte imaginaria despreciable, del orden de $10^{-15}$, así que se dibuja `real(y)`.
+Cada término $c_n\,e^{j\omega_n t}$ es un número complejo. Un número complejo $z = a + bj$ tiene un módulo $r = \sqrt{a^2 + b^2}$ y una fase $\varphi$, y en forma polar se escribe $z = r\,e^{j\varphi}$ (repasa {ref}`matlab-ej1` para trabajar con ellos en MATLAB). Lo único que necesitas saber de esta forma es que multiplicar por $e^{j\alpha}$ gira el número un ángulo $\alpha$ sin cambiar su módulo.
 
-El **teorema de desplazamiento** de los apuntes dice que, si $f(t)$ tiene coeficientes $c_n$, entonces $f(t - t_0)$ tiene coeficientes $e^{-j\omega_n t_0}\,c_n$.
+Con la serie escrita así, el **teorema de desplazamiento** de los apuntes dice que, si $f(t)$ tiene coeficientes $c_n$, entonces $f(t - t_0)$ tiene coeficientes $e^{-j\omega_n t_0}\,c_n$. Es decir, desplazar la señal consiste en multiplicar cada coeficiente por un factor de este tipo.
+
+En `rectangular_b.m` los coeficientes se guardan en el vector `coef` siguiendo el mismo orden de la suma. El de índice $n$ está en `coef(m+1+n)`, así que el armónico 0 está en `coef(m+1)`, y los armónicos 1, 2, 3… en `coef(m+2)`, `coef(m+3)`, `coef(m+4)`… La señal `y` sale con una parte imaginaria despreciable, del orden de $10^{-15}$, por lo que se dibuja `real(y)`.
 
 ```{admonition} Ejemplo resuelto: V = 3, τ = 1, T = 4, t₀ = 0.5 s
 :class: note
