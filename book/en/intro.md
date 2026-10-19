@@ -21,3 +21,4 @@ The first session is written for students who already know C. Many explanations 
 
 - {doc}`01_matlab/session_01_matlab_introduction`
 - {doc}`02_fourier/session_02_time_frequency`
+- {doc}`02_fourier/session_03_fourier_integral`

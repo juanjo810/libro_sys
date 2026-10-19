@@ -5,3 +5,4 @@ parts:
     chapters:
       - file: es/01_matlab/sesion_01_introduccion_matlab
       - file: es/02_fourier/sesion_02_tiempo_frecuencia
+      - file: es/02_fourier/sesion_03_integral_fourier
