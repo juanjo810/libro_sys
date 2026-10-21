@@ -30,12 +30,6 @@ xlim([-20 20]); legend('espectro','coef')
 
 The functions `abs`, `angle`, `real` and `imag` work element by element, like those in session 1 ({ref}`matlab-ex4`). To evaluate a formula on a frequency vector use `./` and `.^`, as in session 2 ({ref}`fourier-matlab`). The exact order of the arguments of each lab function is in the first line of its `.m` file: open it before calling it ({ref}`matlab-ex8`).
 
-```{admonition} The sinc formula in MATLAB
-:class: warning
-
-If you write `F2 = 5*sin(w/2)./(w/2)` and the vector `w` contains 0, at that position MATLAB computes $0/0$ and returns `NaN`, and that point disappears from the plot. Set the value by hand with `F2(w==0) = 5`. Do not use MATLAB's `sinc` function without thinking: it is defined as $\sin(\pi x)/(\pi x)$, not as $\sin(x)/x$, so $\sin(\omega/2)/(\omega/2)$ is written `sinc(w/(2*pi))`.
-```
-
 (integral-ex1)=
 ## Exercise 1. Spectrum of the pulse train and of the single pulse
 
@@ -131,21 +125,21 @@ $$
 f(t - t_0) \leftrightarrow e^{-j\omega t_0}\,F(\omega)
 $$ (eq-shift-en)
 
-The factor $e^{-j\omega t_0}$ has modulus 1, so **the amplitude spectrum does not change** when the signal is delayed: $|e^{-j\omega t_0} F(\omega)| = |F(\omega)|$. What changes is the phase, which becomes $\theta(\omega) - \omega t_0$, and with it $F(\omega)$ stops being real: each value acquires a real and an imaginary part. The frequency spectrum can then no longer be drawn, and the amplitude spectrum, `abs(F)`, and the phase spectrum, `angle(F)`, must be drawn separately.
+The factor $e^{-j\omega t_0}$ adds phase to the spectrum, so the modulus does not change and therefore **the amplitude spectrum does not change** when the signal is delayed: $|e^{-j\omega t_0} F(\omega)| = |F(\omega)|$. What changes is the phase, and with it $F(\omega)$ stops being real: each value acquires a real and an imaginary part. The frequency spectrum can then no longer be drawn, and the amplitude spectrum, `abs(F)`, and the phase spectrum, `angle(F)`, must be drawn separately.
 
-```{admonition} Worked example: V = 3, τ = 1, T = 4, delay t₀ = 0.5 s
+```{admonition} Worked example: V = 3, τ = 1, delay t₀ = 0.5 s
 :class: note
 
-Here $\omega_n t_0 = \pi n/4$. These are the same rotations as in the session 2 example, now read as spectra:
+The centred pulse has $F(\omega) = 3\,\mathrm{sinc}(\omega/2)$. When it is delayed by $t_0 = 0.5$ s, by {eq}`eq-shift-en` its Fourier integral becomes $e^{-j\omega t_0}F(\omega)$. We evaluate both expressions at three frequencies, chosen so that $\omega t_0$ equals $\pi/4$, $\pi/2$ and $3\pi/4$, the same rotations as in the session 2 example, now read as spectra:
 
-| $n$ | 1 | 2 | 3 |
+| $\omega$ (rad/s) | $\pi/2$ | $\pi$ | $3\pi/2$ |
 |---|---|---|---|
-| $c_n$ without shift | 2.701 | 1.910 | 0.900 |
-| Shifted $c_n$ | $1.910 - 1.910j$ | $-1.910j$ | $-0.637 - 0.637j$ |
-| $\lvert c_n \rvert$ | 2.701 | 1.910 | 0.900 |
-| $\theta_n$ | $-\pi/4$ | $-\pi/2$ | $-3\pi/4$ |
+| $F(\omega)$ without shift | 2.701 | 1.910 | 0.900 |
+| Shifted $F(\omega)$ | $1.910 - 1.910j$ | $-1.910j$ | $-0.637 - 0.637j$ |
+| $\lvert F(\omega) \rvert$ | 2.701 | 1.910 | 0.900 |
+| $\theta(\omega)$ | $-\pi/4$ | $-\pi/2$ | $-3\pi/4$ |
 
-The amplitude spectrum is identical to that of the centred signal. The shifted $c_n$ have non-zero real and imaginary parts, and they do not even share a type among themselves: $c_2$ is purely imaginary and $c_1$ is not. There is no single number per frequency that carries all the information.
+The amplitude spectrum is identical to that of the centred pulse. The phase, however, is no longer 0: it equals $-\omega t_0$, a straight line that keeps rotating with frequency. The values of the shifted $F(\omega)$ have non-zero real and imaginary parts, and they do not even share a type among themselves: at $\omega = \pi$ it is purely imaginary and at $\omega = \pi/2$ it is not. There is no single number per frequency that carries all the information, which is why `abs(F)` and `angle(F)` have to be drawn separately.
 ```
 
 ```{admonition} Statement
@@ -187,9 +181,8 @@ $$
 f(t) = \frac{1}{2\pi}\int_{-\infty}^{\infty} F(\omega)\,e^{j\omega t}\,d\omega
 $$ (eq-inverse-integral-en)
 
-It is the continuous version of the series {eq}`eq-complex-series`: the sum of exponentials $e^{j\omega_n t}$ weighted by $c_n/T$ becomes an integral of exponentials $e^{j\omega t}$ weighted by $F(\omega)/2\pi$. The two descriptions of the signal, in time and in frequency, are equivalent, and you can go from one to the other in both directions. In the lab that step is taken by `inv_espectro`, which receives the frequency vector, the spectrum values and a period, and returns the time vector and the reconstructed signal.
+It is the continuous version of the series {eq}`eq-complex-series`: the sum of exponentials $e^{j\omega_n t}$ weighted by $c_n/T$ of the periodic version becomes an integral of exponentials $e^{j\omega t}$ weighted by $F(\omega)/2\pi$. The two descriptions of the signal, in time and in frequency, are equivalent, and you can go from one to the other in both directions. In the lab that step is taken by `inv_espectro`, which receives the frequency vector, the spectrum values and a period, and returns the time vector and the reconstructed signal.
 
-Since the computation is numerical, the reconstructed signal has a residual imaginary part of order $10^{-15}$. Plot `real(y)`, as you did with `rectangular_b.m`.
 
 ### Reading the pulse parameters on its spectrum
 
@@ -200,11 +193,6 @@ To check that the recovered signal is the right one it is enough to look at two 
 
 From those two values you get $\tau$ and $V$, and they must match the width and height of the pulse that appears on the time plot.
 
-```{admonition} Worked example
-:class: note
-
-A spectrum equals 6 at $\omega = 0$ and has its first zero at $\omega = \pi$ rad/s. Then $2\pi/\tau = \pi$ gives $\tau = 2$ s, and $V\tau = 6$ gives $V = 3$. The time signal must be a pulse of height 3 and width 2.
-```
 
 ```{admonition} Statement
 :class: important
@@ -229,7 +217,7 @@ $$
 F(\omega) = V\tau\,\mathrm{sinc}^2(\omega\tau/2) = V\tau\left[\frac{\sin(\omega\tau/2)}{\omega\tau/2}\right]^2
 $$ (eq-tri-pulse-en)
 
-It is the same sinc as the rectangular pulse, squared. That has three consequences you will see on the plot: it is never negative, so phase and amplitude coincide; the side lobes are much smaller, because values below 1 become even smaller when squared; and the zeros are in the same places, so the bandwidth is still $2\pi/\tau$. The DC component is $F(0) = V\tau$, which is the area of the triangle, $\tfrac12 \cdot 2\tau \cdot V$.
+It is the same expression as for the rectangular pulse but with the sinc factor squared. That has three consequences you will see on the plot: it is never negative; the side lobes are much smaller, because values below 1 become even smaller when squared; and the zeros are in the same places, so the bandwidth is still $2\pi/\tau$. The DC component is also the same: it is $F(0) = V\tau$, which is the area of the triangle, $\tfrac12 \cdot 2\tau \cdot V$.
 
 ```{admonition} Worked example: V = 3, τ = 1, T = 4
 :class: note
@@ -245,7 +233,7 @@ Both spectra start at 3 and vanish at $n = 4$, but the triangular one falls much
 
 ### What to change in `rectangular_c.m`
 
-The change is the same one you made in session 2 with `rectangular.m` ({ref}`fourier-ex4`): save a copy under another name, change the function name in the first line and replace the line that computes each coefficient with expression {eq}`eq-coef-tri-en`, squaring the sinc. Also review the coefficient of harmonic 0, which is still $V\tau$. The rest of the file, including the shift $t_0$, does not change.
+The change is the same as in session 2 with `rectangular.m` ({ref}`fourier-ex4`): save a copy under another name, change the function name in the first line and replace the line that computes each coefficient with expression {eq}`eq-coef-tri-en`, squaring the sinc. Also review the coefficient of harmonic 0, which is still $V\tau$. The rest of the file, including the shift $t_0$, does not change.
 
 To generate a **single pulse** with a function that sums a series, the trick in the handout is to use a period $T$ much larger than the plotting interval: with $T = 80$ and time from $-40$ to $40$ only one pulse fits on screen. The spectrum computed by `espectro` is still discrete, with lines every $2\pi/80 \approx 0.079$ rad/s, but they are so close together that `plot` draws a practically continuous curve: it is the transition $T \to \infty$ of {numref}`table-series-integral` seen in practice.
 
@@ -257,23 +245,8 @@ The lecture notes give three parity properties that explain everything you will 
 - If $f(t)$ is **odd**, with $f(-t) = -f(t)$, its Fourier integral is **purely imaginary and odd**.
 - For any signal, the amplitude spectrum $|F(\omega)|$ is always **even** and the phase spectrum $\theta(\omega)$ is always **odd**.
 
-When the pulse is shifted in time it stops being even, and by {eq}`eq-shift-en` its spectrum acquires the factor $e^{-j\omega t_0}$: the amplitude spectrum stays the same, but $F(\omega)$ now has real and imaginary parts, and only the amplitude spectrum can be drawn.
+When the pulse is shifted in time, the signal stops being even, and by {eq}`eq-shift-en` its spectrum acquires the factor $e^{-j\omega t_0}$: the amplitude spectrum stays the same, but $F(\omega)$ now has real and imaginary parts, and only the amplitude spectrum can be drawn.
 
-### Varying τ
-
-The inverse relationship between time and frequency in the lecture notes is written $f(t/a) \leftrightarrow a\,F(a\omega)$: stretching the signal in time compresses its spectrum, and vice versa. For the triangle, changing $\tau$ moves the first zero to $2\pi/\tau$ and the height at $\omega = 0$ to $V\tau$, both for the single pulse and for the train, because neither value depends on $T$. Keep in mind that the base of the triangle is $2\tau$: if you measure the pulse width on the time plot and get 2, then $\tau = 1$.
-
-```{admonition} Worked example: V = 3, three values of τ
-:class: note
-
-| $\tau$ | Base $2\tau$ | $F(0) = V\tau$ | First zero $2\pi/\tau$ (rad/s) | Bandwidth (Hz) |
-|---|---|---|---|---|
-| 0.5 | 1 | 1.5 | $4\pi = 12.57$ | 2 |
-| 1 | 2 | 3 | $2\pi = 6.28$ | 1 |
-| 2 | 4 | 6 | $\pi = 3.14$ | 0.5 |
-
-Twice the pulse width, half the bandwidth. In a train with $T = 10$ the line that vanishes is $n = T/\tau$: 20, 10 and 5.
-```
 
 ```{admonition} Statement
 :class: important

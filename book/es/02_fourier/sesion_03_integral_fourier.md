@@ -30,12 +30,6 @@ xlim([-20 20]); legend('espectro','coef')
 
 Las funciones `abs`, `angle`, `real` e `imag` se aplican elemento a elemento, como las de la sesión 1 ({ref}`matlab-ej4`). Para evaluar una fórmula sobre un vector de frecuencias se usan `./` y `.^`, igual que en la sesión 2 ({ref}`fourier-matlab`). El orden exacto de los argumentos de cada función de la práctica está en la primera línea de su fichero `.m`: ábrelo antes de llamarla ({ref}`matlab-ej8`).
 
-```{admonition} La fórmula del sinc en MATLAB
-:class: warning
-
-Si escribes `F2 = 5*sin(w/2)./(w/2)` y el vector `w` contiene el 0, en esa posición MATLAB calcula $0/0$ y devuelve `NaN`, y ese punto desaparece de la gráfica. Pon el valor a mano con `F2(w==0) = 5`. No uses la función `sinc` de MATLAB sin pensarlo: está definida como $\sin(\pi x)/(\pi x)$, no como $\sin(x)/x$, de modo que $\sin(\omega/2)/(\omega/2)$ se escribe `sinc(w/(2*pi))`.
-```
-
 (integral-ej1)=
 ## Ejercicio 1. Espectro del tren de pulsos y del pulso único
 
@@ -79,7 +73,7 @@ $$
 F(\omega) = V\tau\,\frac{\sin(\omega\tau/2)}{\omega\tau/2} = V\tau\,\mathrm{sinc}(\omega\tau/2)
 $$ (eq-pulso-rect)
 
-Compárala con {eq}`eq-coef-rect`: es la misma expresión con $\omega_n$ sustituida por $\omega$. Ese es el atajo de los apuntes: **si conoces los $c_n$ del tren, obtienes $F(\omega)$ del pulso cambiando $\omega_n$ por $\omega$**, sin resolver ninguna integral. Vale para cualquier señal de la que conozcas los coeficientes de su versión periódica. Al revés, los coeficientes del tren son muestras de la curva del pulso, $c_n = F(\omega_n)$, y por eso al superponer `stem(w, coef)` y la curva $F(\omega)$ las líneas caen exactamente sobre ella.
+Compárala con {eq}`eq-coef-rect`: es la misma expresión con $\omega_n$ sustituida por $\omega$. Ese es el atajo: **si conoces los $c_n$ del tren, obtienes $F(\omega)$ del pulso cambiando $\omega_n$ por $\omega$**, sin resolver ninguna integral. Vale para cualquier señal de la que conozcas los coeficientes de su versión periódica. Al revés, los coeficientes del tren son muestras de la curva del pulso, $c_n = F(\omega_n)$, y por eso al superponer `stem(w, coef)` y la curva $F(\omega)$ las líneas caen exactamente sobre ella.
 
 ```{admonition} Ejemplo resuelto: V = 3, τ = 1
 :class: note
@@ -107,7 +101,7 @@ $$ (eq-ancho-banda)
 
 Fíjate en que solo depende de $\tau$, no de $T$. Hay una **relación inversa** entre la anchura del pulso y el ancho de banda: un pulso más estrecho necesita un intervalo de frecuencias más ancho. En un espectro discreto el primer cero se lee sobre la envolvente, y puede coincidir o no con una línea.
 
-La **componente de continua** es el valor del espectro en $\omega = 0$. Como $e^{0} = 1$, la integral {eq}`eq-integral-fourier` en $\omega = 0$ es simplemente $\int f(t)\,dt$: el **área** bajo la señal. Para el pulso rectangular, $F(0) = V\tau$, el área del rectángulo. Para el tren, $c_0 = V\tau$ es el área de un solo periodo, y el nivel de continua que aparece en la señal es $c_0/T$, como viste en {ref}`fourier-ej3`.
+La **componente de continua** es el valor del espectro en $\omega = 0$. Como $e^{0} = 1$, la integral {eq}`eq-integral-fourier` en $\omega = 0$ es simplemente $\int f(t)\,dt$, y represental el **área** bajo la señal, que para el pulso rectangular, $F(0) = V\tau$, es el área del rectángulo. Para el tren, $c_0 = V\tau$ se calcula exactamente igual y representa el área de un solo periodo.
 
 ```{admonition} Ejemplo resuelto: ancho de banda y continua con V = 3, τ = 1
 :class: note
@@ -131,21 +125,21 @@ $$
 f(t - t_0) \leftrightarrow e^{-j\omega t_0}\,F(\omega)
 $$ (eq-desplazamiento)
 
-El factor $e^{-j\omega t_0}$ tiene módulo 1, así que **el espectro en amplitud no cambia** al retrasar la señal: $|e^{-j\omega t_0} F(\omega)| = |F(\omega)|$. Lo que cambia es la fase, que pasa a ser $\theta(\omega) - \omega t_0$, y con ella $F(\omega)$ deja de ser real: cada valor adquiere parte real e imaginaria. Entonces ya no se puede dibujar el espectro en frecuencia, y hay que dibujar por separado el de amplitud, `abs(F)`, y el de fase, `angle(F)`.
+El factor $e^{-j\omega t_0}$ añade la fase al espectro, así que el módulo no cambia y por tanto, **el espectro en amplitud no cambia** al retrasar la señal: $|e^{-j\omega t_0} F(\omega)| = |F(\omega)|$. Lo que cambia es la fase y con ella $F(\omega)$ deja de ser real: cada valor adquiere parte real e imaginaria. Entonces ya no se puede dibujar el espectro en frecuencia, y hay que dibujar por separado el de amplitud, `abs(F)`, y el de fase, `angle(F)`.
 
-```{admonition} Ejemplo resuelto: V = 3, τ = 1, T = 4, retraso t₀ = 0.5 s
+```{admonition} Ejemplo resuelto: V = 3, τ = 1, retraso t₀ = 0.5 s
 :class: note
 
-Aquí $\omega_n t_0 = \pi n/4$. Son los mismos giros que en el ejemplo de la sesión 2, ahora leídos como espectros:
+El pulso centrado tiene $F(\omega) = 3\,\mathrm{sinc}(\omega/2)$. Al retrasarlo $t_0 = 0.5$ s, según {eq}`eq-desplazamiento`, su integral de Fourier pasa a ser $e^{-j\omega t_0}F(\omega)$. Evaluamos las dos expresiones en tres frecuencias, elegidas para que $\omega t_0$ valga $\pi/4$, $\pi/2$ y $3\pi/4$, los mismos giros que en el ejemplo de la sesión 2, ahora leídos como espectros:
 
-| $n$ | 1 | 2 | 3 |
+| $\omega$ (rad/s) | $\pi/2$ | $\pi$ | $3\pi/2$ |
 |---|---|---|---|
-| $c_n$ sin desplazar | 2.701 | 1.910 | 0.900 |
-| $c_n$ desplazado | $1.910 - 1.910j$ | $-1.910j$ | $-0.637 - 0.637j$ |
-| $\lvert c_n \rvert$ | 2.701 | 1.910 | 0.900 |
-| $\theta_n$ | $-\pi/4$ | $-\pi/2$ | $-3\pi/4$ |
+| $F(\omega)$ sin desplazar | 2.701 | 1.910 | 0.900 |
+| $F(\omega)$ desplazado | $1.910 - 1.910j$ | $-1.910j$ | $-0.637 - 0.637j$ |
+| $\lvert F(\omega) \rvert$ | 2.701 | 1.910 | 0.900 |
+| $\theta(\omega)$ | $-\pi/4$ | $-\pi/2$ | $-3\pi/4$ |
 
-El espectro en amplitud es idéntico al de la señal centrada. Los $c_n$ desplazados tienen parte real e imaginaria no nulas, y ni siquiera comparten tipo entre sí: $c_2$ es imaginario puro y $c_1$ no. No hay un solo número por frecuencia que recoja toda la información.
+El espectro en amplitud es idéntico al del pulso centrado. La fase, en cambio, ya no es 0: vale $-\omega t_0$, una recta que va girando con la frecuencia. Los valores de $F(\omega)$ desplazado tienen parte real e imaginaria no nulas, y ni siquiera comparten tipo entre sí: en $\omega = \pi$ es imaginario puro y en $\omega = \pi/2$ no. No hay un solo número por frecuencia que recoja toda la información, y por eso hay que dibujar por separado `abs(F)` y `angle(F)`.
 ```
 
 ```{admonition} Enunciado
@@ -187,9 +181,8 @@ $$
 f(t) = \frac{1}{2\pi}\int_{-\infty}^{\infty} F(\omega)\,e^{j\omega t}\,d\omega
 $$ (eq-integral-inversa)
 
-Es la versión continua de la serie {eq}`eq-serie-compleja`: la suma de exponenciales $e^{j\omega_n t}$ pesadas por $c_n/T$ se convierte en una integral de exponenciales $e^{j\omega t}$ pesadas por $F(\omega)/2\pi$. Las dos descripciones de la señal, en el tiempo y en la frecuencia, son equivalentes, y se puede pasar de una a otra en los dos sentidos. En la práctica ese paso lo da `inv_espectro`, que recibe el vector de frecuencias, los valores del espectro y un periodo, y devuelve el vector de tiempos y la señal reconstruida.
+Es la versión continua de la serie {eq}`eq-serie-compleja`: la suma de exponenciales $e^{j\omega_n t}$ pesadas por $c_n/T$ de la versión periódica, se convierte en una integral de exponenciales $e^{j\omega t}$ pesadas por $F(\omega)/2\pi$. Las dos descripciones de la señal, en el tiempo y en la frecuencia, son equivalentes, y se puede pasar de una a otra en los dos sentidos. En la práctica ese paso lo da `inv_espectro`, que recibe el vector de frecuencias, los valores del espectro y un periodo, y devuelve el vector de tiempos y la señal reconstruida.
 
-Como el cálculo es numérico, la señal reconstruida tiene una parte imaginaria residual del orden de $10^{-15}$. Dibuja `real(y)`, como hacías con `rectangular_b.m`.
 
 ### Leer los parámetros del pulso en su espectro
 
@@ -200,11 +193,6 @@ Para comprobar que la señal recuperada es la correcta basta con mirar dos cosas
 
 Con esos dos datos salen $\tau$ y $V$, y deben coincidir con la anchura y la altura del pulso que aparece en la gráfica temporal.
 
-```{admonition} Ejemplo resuelto
-:class: note
-
-Un espectro vale 6 en $\omega = 0$ y tiene su primer cero en $\omega = \pi$ rad/s. Entonces $2\pi/\tau = \pi$ da $\tau = 2$ s, y $V\tau = 6$ da $V = 3$. La señal en el tiempo debe ser un pulso de altura 3 y anchura 2.
-```
 
 ```{admonition} Enunciado
 :class: important
@@ -229,7 +217,7 @@ $$
 F(\omega) = V\tau\,\mathrm{sinc}^2(\omega\tau/2) = V\tau\left[\frac{\sin(\omega\tau/2)}{\omega\tau/2}\right]^2
 $$ (eq-pulso-tri)
 
-Es el mismo sinc del pulso rectangular, elevado al cuadrado. Eso tiene tres consecuencias que verás en la gráfica: nunca es negativo, así que fase y amplitud coinciden; los lóbulos laterales son mucho más pequeños, porque los valores menores que 1 se hacen aún menores al elevarlos al cuadrado; y los ceros están en los mismos sitios, de modo que el ancho de banda sigue siendo $2\pi/\tau$. La componente de continua es $F(0) = V\tau$, que es el área del triángulo, $\tfrac12 \cdot 2\tau \cdot V$.
+Es la misma expresión que en el puslo rectangular pero con el factor sinc elevado al cuadrado. Eso tiene tres consecuencias que verás en la gráfica: nunca es negativo; los lóbulos laterales son mucho más pequeños, porque los valores menores que 1 se hacen aún menores al elevarlos al cuadrado; y los ceros están en los mismos sitios, de modo que el ancho de banda sigue siendo $2\pi/\tau$. La componente de continua es también igual: es $F(0) = V\tau$, que es el área del triángulo, $\tfrac12 \cdot 2\tau \cdot V$.
 
 ```{admonition} Ejemplo resuelto: V = 3, τ = 1, T = 4
 :class: note
@@ -245,7 +233,7 @@ Los dos espectros arrancan en 3 y se anulan en $n = 4$, pero el triangular cae m
 
 ### Qué hay que tocar en `rectangular_c.m`
 
-El cambio es el mismo que hiciste en la sesión 2 con `rectangular.m` ({ref}`fourier-ej4`): guardar una copia con otro nombre, cambiar el nombre de la función en la primera línea y sustituir la línea que calcula cada coeficiente por la expresión {eq}`eq-coef-tri`, elevando el sinc al cuadrado. Revisa también el coeficiente del armónico 0, que sigue valiendo $V\tau$. El resto del fichero, incluido el desplazamiento $t_0$, no cambia.
+El cambio es el mismo que en la sesión 2 con `rectangular.m` ({ref}`fourier-ej4`): guardar una copia con otro nombre, cambiar el nombre de la función en la primera línea y sustituir la línea que calcula cada coeficiente por la expresión {eq}`eq-coef-tri`, elevando el sinc al cuadrado. Revisa también el coeficiente del armónico 0, que sigue valiendo $V\tau$. El resto del fichero, incluido el desplazamiento $t_0$, no cambia.
 
 Para generar un **pulso único** con una función que suma una serie, el truco del guion es usar un periodo $T$ mucho mayor que el intervalo de representación: con $T = 80$ y el tiempo de $-40$ a $40$ solo cabe un pulso en pantalla. El espectro que calcula `espectro` sigue siendo discreto, con líneas cada $2\pi/80 \approx 0.079$ rad/s, pero están tan juntas que `plot` dibuja una curva prácticamente continua: es la transición $T \to \infty$ de la {numref}`tabla-serie-integral` vista en la práctica.
 
@@ -257,23 +245,8 @@ Los apuntes dan tres propiedades de paridad que explican todo lo que vas a ver e
 - Si $f(t)$ es **impar**, con $f(-t) = -f(t)$, su integral de Fourier es **imaginaria pura e impar**.
 - Para cualquier señal, el espectro en amplitud $|F(\omega)|$ es siempre **par** y el espectro en fase $\theta(\omega)$ es siempre **impar**.
 
-Al desplazar el pulso en el tiempo deja de ser par, y según {eq}`eq-desplazamiento` su espectro adquiere el factor $e^{-j\omega t_0}$: el espectro en amplitud sigue siendo el mismo, pero $F(\omega)$ ya tiene parte real e imaginaria, y solo se puede dibujar el de amplitud.
+Al desplazar el pulso en el tiempo, la señal deja de ser par, y según {eq}`eq-desplazamiento` su espectro adquiere el factor $e^{-j\omega t_0}$: el espectro en amplitud sigue siendo el mismo, pero $F(\omega)$ ya tiene parte real e imaginaria, y solo se puede dibujar el de amplitud.
 
-### Variar τ
-
-La relación inversa entre tiempo y frecuencia de los apuntes se escribe $f(t/a) \leftrightarrow a\,F(a\omega)$: estirar la señal en el tiempo comprime su espectro, y al revés. Para el triángulo, cambiar $\tau$ mueve el primer cero a $2\pi/\tau$ y la altura en $\omega = 0$ a $V\tau$, tanto en el pulso único como en el tren, porque ninguno de los dos valores depende de $T$. Ten en cuenta que la base del triángulo es $2\tau$: si mides el ancho del pulso en la gráfica temporal y obtienes 2, es que $\tau = 1$.
-
-```{admonition} Ejemplo resuelto: V = 3, tres valores de τ
-:class: note
-
-| $\tau$ | Base $2\tau$ | $F(0) = V\tau$ | Primer cero $2\pi/\tau$ (rad/s) | Ancho de banda (Hz) |
-|---|---|---|---|---|
-| 0.5 | 1 | 1.5 | $4\pi = 12.57$ | 2 |
-| 1 | 2 | 3 | $2\pi = 6.28$ | 1 |
-| 2 | 4 | 6 | $\pi = 3.14$ | 0.5 |
-
-Pulso el doble de ancho, mitad de ancho de banda. En un tren con $T = 10$ la línea que se anula es $n = T/\tau$: 20, 10 y 5.
-```
 
 ```{admonition} Enunciado
 :class: important
