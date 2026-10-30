@@ -22,3 +22,4 @@ La primera sesión está escrita pensando en quien ya conoce C. Muchas explicaci
 - {doc}`01_matlab/sesion_01_introduccion_matlab`
 - {doc}`02_fourier/sesion_02_tiempo_frecuencia`
 - {doc}`02_fourier/sesion_03_integral_fourier`
+- {doc}`03_sistemas/sesion_04_sistemas_lineales`

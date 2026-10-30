@@ -6,3 +6,4 @@ parts:
       - file: en/01_matlab/session_01_matlab_introduction
       - file: en/02_fourier/session_02_time_frequency
       - file: en/02_fourier/session_03_fourier_integral
+      - file: en/03_systems/session_04_linear_systems
