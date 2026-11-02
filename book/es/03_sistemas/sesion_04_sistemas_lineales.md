@@ -273,6 +273,12 @@ La **frecuencia de corte** $\omega_c$ separa la zona que pasa de la que no. En e
 Una señal tiene dos componentes, de 500 Hz y 3000 Hz, y pasa por un filtro pasabajas con frecuencia de corte 1000 Hz. En el espectro de salida la línea de 500 Hz se mantiene, porque está dentro de la banda de paso, y la de 3000 Hz desaparece. Con un pasaaltas de la misma frecuencia de corte ocurriría lo contrario.
 ```
 
+```{admonition} Instala el Signal Processing Toolbox antes de la sesión
+:class: warning
+
+Los filtros `FiltroA.m` y `FiltroB.m` se construyen con la función `butter` de MATLAB, que no viene en la instalación básica sino en el complemento **Signal Processing Toolbox**. Si al llamar al filtro aparece un error del tipo *Unrecognized function or variable 'butter'*, instálalo desde la pestaña **Home**, botón **Add-Ons**, **Get Add-Ons**, buscando "Signal Processing Toolbox". Con la licencia de la universidad no tiene coste, pero la descarga tarda unos minutos: hazlo antes de la sesión.
+```
+
 ### Una señal de audio es una señal muestreada
 
 El fichero `audio1.wav` contiene una señal de sonido muestreada a $f_s = 44100$ muestras por segundo. `leeraudio` devuelve el vector de tiempos `t`, los valores `f` y la duración `tfin`. La señal no es periódica, así que al llamar a `espectro` el argumento del periodo es un parámetro ajustable, y el guion indica usar `tfin`. Las frecuencias que devuelve `espectro` están en rad/s; para interpretarlas en Hz, que es como se habla del sonido, conviene dibujar frente a `w/(2*pi)` y limitar el eje con `xlim`, porque el vector llega hasta decenas de miles de rad/s y lo interesante está en los primeros kilohercios.

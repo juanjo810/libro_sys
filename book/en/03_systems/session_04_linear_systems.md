@@ -273,6 +273,12 @@ The **cut-off frequency** $\omega_c$ separates the region that passes from the o
 A signal has two components, at 500 Hz and 3000 Hz, and passes through a low-pass filter with cut-off frequency 1000 Hz. In the output spectrum the 500 Hz line remains, because it is inside the pass band, and the 3000 Hz line disappears. With a high-pass filter of the same cut-off frequency the opposite would happen.
 ```
 
+```{admonition} Install the Signal Processing Toolbox before the session
+:class: warning
+
+The filters `FiltroA.m` and `FiltroB.m` are built with MATLAB's `butter` function, which is not part of the basic installation but of the **Signal Processing Toolbox** add-on. If calling the filter gives an error such as *Unrecognized function or variable 'butter'*, install it from the **Home** tab, **Add-Ons** button, **Get Add-Ons**, searching for "Signal Processing Toolbox". With the university licence it is free of charge, but the download takes a few minutes: do it before the session.
+```
+
 ### An audio signal is a sampled signal
 
 The file `audio1.wav` contains a sound signal sampled at $f_s = 44100$ samples per second. `leeraudio` returns the time vector `t`, the values `f` and the duration `tfin`. The signal is not periodic, so when calling `espectro` the period argument is an adjustable parameter, and the handout says to use `tfin`. The frequencies returned by `espectro` are in rad/s; to interpret them in Hz, which is how sound is described, plot against `w/(2*pi)` and limit the axis with `xlim`, because the vector reaches tens of thousands of rad/s and the interesting part lies in the first few kilohertz.
