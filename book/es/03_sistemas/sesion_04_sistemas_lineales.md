@@ -57,7 +57,19 @@ Como $H(\omega)$ es compleja, se escribe $H(\omega) = |H(\omega)|\,e^{j\theta(\o
 
 ### La red RC
 
-La red RC de la práctica es una resistencia $R$ seguida de un condensador $C$, con la salida tomada en el condensador. Al aplicar la transformada de Fourier a sus ecuaciones y dividir, la función de transferencia queda
+La red RC de la práctica es una resistencia $R$ seguida de un condensador $C$, con la salida tomada en el condensador ({numref}`fig-red-rc`).
+
+```{figure} ../../_static/generated/red_rc.png
+---
+name: fig-red-rc
+alt: Red RC con la entrada v0(t) en los terminales de la izquierda, una resistencia R en serie, un condensador C en paralelo con la salida vs(t) y la corriente i(t)
+width: 60%
+align: center
+---
+Red RC: la entrada $v_0(t)$ se aplica a la resistencia y la salida $v_s(t)$ se toma entre los extremos del condensador.
+```
+
+Sus ecuaciones son $v_0(t) = Ri(t) + \frac{1}{C}\int i\,dt$ y $v_s(t) = \frac{1}{C}\int i\,dt$. Al aplicar la transformada de Fourier a ambas, usando que la integral se transforma en una división por $j\omega$, y dividir la segunda entre la primera, la función de transferencia queda
 
 $$
 H(\omega) = \frac{1}{1 + j\,\omega/\omega_0}, \qquad \omega_0 = \frac{1}{RC}

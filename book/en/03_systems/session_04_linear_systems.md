@@ -57,7 +57,19 @@ Since $H(\omega)$ is complex, it is written $H(\omega) = |H(\omega)|\,e^{j\theta
 
 ### The RC network
 
-The RC network in the lab is a resistor $R$ followed by a capacitor $C$, with the output taken across the capacitor. Applying the Fourier transform to its equations and dividing, the transfer function is
+The RC network in the lab is a resistor $R$ followed by a capacitor $C$, with the output taken across the capacitor ({numref}`fig-rc-network`).
+
+```{figure} ../../_static/generated/red_rc.png
+---
+name: fig-rc-network
+alt: RC network with the input v0(t) at the left terminals, a series resistor R, a capacitor C in parallel with the output vs(t) and the current i(t)
+width: 60%
+align: center
+---
+RC network: the input $v_0(t)$ is applied to the resistor and the output $v_s(t)$ is taken across the capacitor.
+```
+
+Its equations are $v_0(t) = Ri(t) + \frac{1}{C}\int i\,dt$ and $v_s(t) = \frac{1}{C}\int i\,dt$. Applying the Fourier transform to both, using that the integral becomes a division by $j\omega$, and dividing the second by the first, the transfer function is
 
 $$
 H(\omega) = \frac{1}{1 + j\,\omega/\omega_0}, \qquad \omega_0 = \frac{1}{RC}
