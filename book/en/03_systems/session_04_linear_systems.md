@@ -81,7 +81,6 @@ $$
 |H(\omega)| = \frac{1}{\sqrt{1 + (\omega/\omega_0)^2}}, \qquad \theta(\omega) = -\arctan\!\left(\frac{\omega}{\omega_0}\right)
 $$ (eq-rc-modulus-phase-en)
 
-At $\omega = 0$ the modulus is 1 and the phase 0: the DC component passes unchanged. As the frequency rises the modulus falls towards 0 without ever vanishing, and the phase falls from 0 to $-\pi/2$. It is a **low-pass filter**: it lets low frequencies through and attenuates high ones. Its only parameter is $\omega_0$, which marks where it starts to attenuate.
 
 ### Bandwidth of a system
 
@@ -245,11 +244,6 @@ All of this is read directly on the two plots of $H$. Each spectrum is read **se
 
 Since the two readings are independent, every combination can occur. An ideal medium has $|H| = 1$ and a linear phase: delay only. A system with a varying $|H|$ and a linear phase has attenuation distortion but no delay distortion. And a system with a varying $|H|$ and a non-linear phase has **both distortions at once**, which is the usual situation in a real system such as the RC network. Having one of them says nothing about the other: always look at both plots.
 
-An identically zero phase is a particular case of a straight line with slope 0. Keep in mind that `angle` returns the phase between $-\pi$ and $\pi$: a line with a large slope will appear on the plot as a sawtooth. If you have the expression of $H$, it is more reliable to read the phase from it than from the plot.
-
-### Simulating it with `espectro` and `inv_espectro`
-
-The signal in the statement, with frequencies of 1, 3 and 4 Hz, is periodic, with the common period of its harmonics ({ref}`fourier-ex1`). Therefore `espectro` returns a line spectrum, one line per harmonic, and multiplying each line by $H(\omega_n)$ is exactly applying {eq}`eq-superposition-en` harmonic by harmonic. Both routes must give the same output. The practical difference is that the numerical route needs $H$ defined on the **whole** vector `w`, including negative frequencies, with $H(-\omega) = H(\omega)^*$; if a function only makes sense for $\omega \ge 0$, the negative half has to be completed with the conjugate before multiplying.
 
 ```{admonition} Statement
 :class: important
@@ -298,10 +292,9 @@ The filters `FiltroA.m` and `FiltroB.m` are built with MATLAB's `butter` functio
 
 ### An audio signal is a sampled signal
 
-The file `audio1.wav` contains a sound signal sampled at $f_s = 44100$ samples per second. `leeraudio` returns the time vector `t`, the values `f` and the duration `tfin`. The signal is not periodic, so when calling `espectro` the period argument is an adjustable parameter, and the handout says to use `tfin`. The frequencies returned by `espectro` are in rad/s; to interpret them in Hz, which is how sound is described, plot against `w/(2*pi)` and limit the axis with `xlim`, because the vector reaches tens of thousands of rad/s and the interesting part lies in the first few kilohertz.
+The file `audio1.wav` contains a sound signal sampled at $f_s = 44100$ samples per second. `leeraudio` returns the time vector `t`, the values `f` and the duration `tfin`. The signal is not periodic, so when calling `espectro` the period argument is an adjustable parameter, and the handout says to use `tfin`.
 
-The effect of a filter on the audio can be both seen and heard. On the spectrum, comparing `abs(G)` with `abs(F)` shows the region the filter removes. When listening with `sound`, a low-pass filter leaves a muffled sound, as if through a wall, because it removes the treble; a high-pass filter leaves a weak, metallic sound, because it removes the bass, where most of the energy of a voice lies. If the filtered signal is very weak, it can be scaled before listening, for example `sound(g/max(abs(g)), 44100)`.
-
+The effect of a filter on the audio can be both seen and heard. On the spectrum, comparing `abs(G)` with `abs(F)` shows the region the filter removes. When listening with `sound`, a low-pass filter leaves a muffled sound, as if through a wall, because it removes the treble; a high-pass filter leaves a weak, metallic sound, because it removes the bass, where most of the energy of a voice lies.
 ```{admonition} Statement
 :class: important
 

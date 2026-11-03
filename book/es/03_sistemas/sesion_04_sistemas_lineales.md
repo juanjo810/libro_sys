@@ -81,7 +81,6 @@ $$
 |H(\omega)| = \frac{1}{\sqrt{1 + (\omega/\omega_0)^2}}, \qquad \theta(\omega) = -\arctan\!\left(\frac{\omega}{\omega_0}\right)
 $$ (eq-modulo-fase-rc)
 
-En $\omega = 0$ el módulo vale 1 y la fase 0: la componente de continua pasa intacta. Al subir la frecuencia el módulo baja hacia 0 sin llegar nunca a anularse, y la fase baja desde 0 hasta $-\pi/2$. Es un **filtro pasabajas**: deja pasar las frecuencias bajas y atenúa las altas. El único parámetro es $\omega_0$, que marca dónde empieza a atenuar.
 
 ### Ancho de banda de un sistema
 
@@ -245,11 +244,6 @@ Todo esto se lee directamente en las dos gráficas de $H$. Cada espectro se lee 
 
 Como las dos lecturas son independientes, pueden darse todas las combinaciones. Un medio ideal tiene $|H| = 1$ y fase lineal: solo retardo. Un sistema con $|H|$ variable y fase lineal tiene distorsión de atenuación pero no de retardo. Y un sistema con $|H|$ variable y fase no lineal tiene **las dos distorsiones a la vez**, que es lo más habitual en un sistema real como la red RC. Que haya una de ellas no dice nada sobre la otra: hay que mirar las dos gráficas siempre.
 
-La fase idénticamente nula es un caso particular de recta con pendiente 0. Ten en cuenta que `angle` devuelve la fase entre $-\pi$ y $\pi$: una recta de pendiente grande aparecerá en la gráfica como dientes de sierra. Si tienes la expresión de $H$, es más fiable leer la fase en ella que en la gráfica.
-
-### Simularlo con `espectro` e `inv_espectro`
-
-La señal del enunciado, con frecuencias de 1, 3 y 4 Hz, es periódica, con el periodo común de sus armónicos ({ref}`fourier-ej1`). Por tanto `espectro` devuelve un espectro de líneas, una por armónico, y multiplicar cada línea por $H(\omega_n)$ es exactamente aplicar {eq}`eq-superposicion` armónico a armónico. Los dos caminos tienen que dar la misma salida. La diferencia práctica es que el camino numérico necesita $H$ definida en **todo** el vector `w`, incluidas las frecuencias negativas, con $H(-\omega) = H(\omega)^*$; si una función solo tiene sentido para $\omega \ge 0$, hay que completar la mitad negativa con el conjugado antes de multiplicar.
 
 ```{admonition} Enunciado
 :class: important
@@ -298,10 +292,9 @@ Los filtros `FiltroA.m` y `FiltroB.m` se construyen con la función `butter` de 
 
 ### Una señal de audio es una señal muestreada
 
-El fichero `audio1.wav` contiene una señal de sonido muestreada a $f_s = 44100$ muestras por segundo. `leeraudio` devuelve el vector de tiempos `t`, los valores `f` y la duración `tfin`. La señal no es periódica, así que al llamar a `espectro` el argumento del periodo es un parámetro ajustable, y el guion indica usar `tfin`. Las frecuencias que devuelve `espectro` están en rad/s; para interpretarlas en Hz, que es como se habla del sonido, conviene dibujar frente a `w/(2*pi)` y limitar el eje con `xlim`, porque el vector llega hasta decenas de miles de rad/s y lo interesante está en los primeros kilohercios.
+El fichero `audio1.wav` contiene una señal de sonido muestreada a $f_s = 44100$ muestras por segundo. `leeraudio` devuelve el vector de tiempos `t`, los valores `f` y la duración `tfin`. La señal no es periódica, así que al llamar a `espectro` el argumento del periodo es un parámetro ajustable, y el guion indica usar `tfin`.
 
-El efecto de un filtro sobre el audio se puede ver y oír. En el espectro, al comparar `abs(G)` con `abs(F)` desaparece la zona que el filtro elimina. Al escucharlo con `sound`, un pasabajas deja un sonido apagado, como a través de una pared, porque quita los agudos; un pasaaltas deja un sonido débil y metálico, porque quita los graves, donde está la mayor parte de la energía de la voz. Si la señal filtrada queda muy débil, se puede escalar antes de escucharla, por ejemplo `sound(g/max(abs(g)), 44100)`.
-
+El efecto de un filtro sobre el audio se puede ver y oír. En el espectro, al comparar `abs(G)` con `abs(F)` desaparece la zona que el filtro elimina. Al escucharlo con `sound`, un pasabajas deja un sonido apagado, como a través de una pared, porque quita los agudos; un pasaaltas deja un sonido débil y metálico, porque quita los graves, donde está la mayor parte de la energía de la voz.
 ```{admonition} Enunciado
 :class: important
 
