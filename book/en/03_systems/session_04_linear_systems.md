@@ -213,34 +213,39 @@ And two **with distortion**, which do change the shape:
 Two harmonics can have different phase shifts and the same delay. The delay of the harmonic with frequency $\omega_k$ is $t_d = -\theta(\omega_k)/\omega_k$. If $\theta(2\pi) = -0.2\pi$ and $\theta(6\pi) = -0.6\pi$, the phase shifts differ but both delays equal 0.1 s: no distortion. If instead $\theta(2\pi) = \theta(6\pi) = -0.2\pi$, the delays are 0.1 s and 0.033 s: the second harmonic arrives before the first and the shape changes.
 ```
 
-All of this is read directly on the two plots of $H$:
+All of this is read directly on the two plots of $H$. Each spectrum is read **separately**: the amplitude spectrum tells you about attenuation and the phase spectrum tells you about delay, and the two conclusions add up.
 
-```{list-table} Reading the impairments on the spectra of a system.
+```{list-table} Reading the impairments on the spectra of a system. The two readings are independent.
 :name: table-impairments
 :header-rows: 1
-:widths: 28 32 40
+:widths: 22 36 42
 
+* - Spectrum
+  - What it looks like
+  - Impairment it produces
 * - $\lvert H(\omega)\rvert$
-  - $\theta(\omega)$
-  - Impairment
-* - Constant equal to 1
-  - Linear, slope $-t_d$
-  - Delay only. Ideal medium.
-* - Constant smaller than 1
-  - Linear
-  - Attenuation and delay, no distortion.
-* - Constant greater than 1
-  - Linear
-  - Amplification and delay, no distortion.
-* - Varying with $\omega$
-  - Any
+  - Constant equal to 1
+  - Neither attenuation nor attenuation distortion.
+* - $\lvert H(\omega)\rvert$
+  - Constant smaller than 1 (or greater than 1)
+  - Attenuation (or amplification), no distortion.
+* - $\lvert H(\omega)\rvert$
+  - Varying with $\omega$
   - Attenuation distortion.
-* - Any
+* - $\theta(\omega)$
+  - Identically zero
+  - Neither delay nor delay distortion.
+* - $\theta(\omega)$
+  - Linear, slope $-t_d$
+  - Delay $t_d$, no distortion.
+* - $\theta(\omega)$
   - Non-linear, or constant other than 0
   - Delay distortion.
 ```
 
-An identically zero phase is a particular case of a straight line with slope 0: zero delay, no delay distortion. Keep in mind that `angle` returns the phase between $-\pi$ and $\pi$: a line with a large slope will appear on the plot as a sawtooth. If you have the expression of $H$, it is more reliable to read the phase from it than from the plot.
+Since the two readings are independent, every combination can occur. An ideal medium has $|H| = 1$ and a linear phase: delay only. A system with a varying $|H|$ and a linear phase has attenuation distortion but no delay distortion. And a system with a varying $|H|$ and a non-linear phase has **both distortions at once**, which is the usual situation in a real system such as the RC network. Having one of them says nothing about the other: always look at both plots.
+
+An identically zero phase is a particular case of a straight line with slope 0. Keep in mind that `angle` returns the phase between $-\pi$ and $\pi$: a line with a large slope will appear on the plot as a sawtooth. If you have the expression of $H$, it is more reliable to read the phase from it than from the plot.
 
 ### Simulating it with `espectro` and `inv_espectro`
 

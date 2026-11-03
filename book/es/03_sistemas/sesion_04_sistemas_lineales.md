@@ -213,34 +213,39 @@ Y dos **con distorsión**, que sí cambian la forma:
 Dos armónicos pueden tener desfases distintos y el mismo retardo. El retardo del armónico de frecuencia $\omega_k$ es $t_d = -\theta(\omega_k)/\omega_k$. Si $\theta(2\pi) = -0.2\pi$ y $\theta(6\pi) = -0.6\pi$, los desfases son distintos pero ambos retardos valen 0.1 s: no hay distorsión. Si en cambio $\theta(2\pi) = \theta(6\pi) = -0.2\pi$, los retardos son 0.1 s y 0.033 s: el segundo armónico llega antes que el primero y la forma cambia.
 ```
 
-Todo esto se lee directamente en las dos gráficas de $H$:
+Todo esto se lee directamente en las dos gráficas de $H$. Cada espectro se lee **por separado**: el de amplitud informa de la atenuación y el de fase informa del retardo, y las dos conclusiones se suman.
 
-```{list-table} Lectura de las perturbaciones en los espectros de un sistema.
+```{list-table} Lectura de las perturbaciones en los espectros de un sistema. Las dos lecturas son independientes.
 :name: tabla-perturbaciones
 :header-rows: 1
-:widths: 28 32 40
+:widths: 22 36 42
 
+* - Espectro
+  - Cómo es
+  - Qué perturbación produce
 * - $\lvert H(\omega)\rvert$
-  - $\theta(\omega)$
-  - Perturbación
-* - Constante igual a 1
-  - Lineal, pendiente $-t_d$
-  - Solo retardo. Medio ideal.
-* - Constante menor que 1
-  - Lineal
-  - Atenuación y retardo, sin distorsión.
-* - Constante mayor que 1
-  - Lineal
-  - Amplificación y retardo, sin distorsión.
-* - Variable con $\omega$
-  - Cualquiera
+  - Constante igual a 1
+  - Ni atenuación ni distorsión de atenuación.
+* - $\lvert H(\omega)\rvert$
+  - Constante menor que 1 (o mayor que 1)
+  - Atenuación (o amplificación), sin distorsión.
+* - $\lvert H(\omega)\rvert$
+  - Variable con $\omega$
   - Distorsión de atenuación.
-* - Cualquiera
+* - $\theta(\omega)$
+  - Idénticamente nula
+  - Ni retardo ni distorsión de retardo.
+* - $\theta(\omega)$
+  - Lineal, pendiente $-t_d$
+  - Retardo $t_d$, sin distorsión.
+* - $\theta(\omega)$
   - No lineal, o constante distinta de 0
   - Distorsión de retardo.
 ```
 
-Una fase idénticamente nula es un caso particular de recta con pendiente 0: retardo nulo, sin distorsión de retardo. Ten en cuenta que `angle` devuelve la fase entre $-\pi$ y $\pi$: una recta de pendiente grande aparecerá en la gráfica como dientes de sierra. Si tienes la expresión de $H$, es más fiable leer la fase en ella que en la gráfica.
+Como las dos lecturas son independientes, pueden darse todas las combinaciones. Un medio ideal tiene $|H| = 1$ y fase lineal: solo retardo. Un sistema con $|H|$ variable y fase lineal tiene distorsión de atenuación pero no de retardo. Y un sistema con $|H|$ variable y fase no lineal tiene **las dos distorsiones a la vez**, que es lo más habitual en un sistema real como la red RC. Que haya una de ellas no dice nada sobre la otra: hay que mirar las dos gráficas siempre.
+
+La fase idénticamente nula es un caso particular de recta con pendiente 0. Ten en cuenta que `angle` devuelve la fase entre $-\pi$ y $\pi$: una recta de pendiente grande aparecerá en la gráfica como dientes de sierra. Si tienes la expresión de $H$, es más fiable leer la fase en ella que en la gráfica.
 
 ### Simularlo con `espectro` e `inv_espectro`
 
