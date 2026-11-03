@@ -271,6 +271,7 @@ Keeping the remaining parameters constant, vary $\tau$ (make three variations) a
 - Bandwidth (first criterion): $\omega_{AB} = 2\pi/\tau$ rad/s, or $1/\tau$ Hz. It depends on $\tau$ and not on $T$; narrow pulse, large bandwidth.
 - DC component: $F(0)$, the area under the signal. It equals $V\tau$ for both the rectangular and the triangular pulse. In the train, $c_0 = V\tau$ is the area of one period.
 - `espectro(t, y, T)` computes the spectrum numerically: coefficients if `y` is periodic, Fourier integral if not. `inv_espectro` goes the other way with $f(t) = \frac{1}{2\pi}\int F(\omega)\,e^{j\omega t}\,d\omega$.
+- `stem` or `plot` depending on the kind of spectrum: that of a **periodic** signal is discrete, it only exists at the harmonics $\omega_n$, and it is drawn with `stem(w, coef)`, one line per harmonic. That of a **non-periodic** signal is continuous, it exists for every $\omega$, and it is drawn with `plot(w, F)`. Time signals are always drawn with `plot`. If in doubt, look at `w`: a few values spaced $2\pi/T$ apart call for `stem`; a fine vector calls for `plot`.
 - Delaying by $t_0$ multiplies the spectrum by $e^{-j\omega t_0}$: the amplitude spectrum does not change, the phase does, and $F(\omega)$ stops being real.
 - The frequency spectrum can only be drawn if $F(\omega)$ is purely real or purely imaginary. If it has real and imaginary parts, draw `abs(F)` and `angle(F)` separately.
 - Even signal: real, even spectrum. Odd signal: purely imaginary, odd spectrum. Always: $|F(\omega)|$ even and $\theta(\omega)$ odd.
